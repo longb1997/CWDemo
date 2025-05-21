@@ -3,17 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
+import WelcomeScreen from '../screens/WelcomeScreen/WelcomeScreen';
+import LoginScreen from '../screens/LoginScreen/LoginScreen';
+import MasterKeyScreen from '../screens/MasterkeyScreen/MasterKeyScreen';
 
-// Placeholder AuthScreen
-function AuthScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Auth Screen</Text>
-    </View>
-  );
-}
-
-// Placeholder HomeScreen
 function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -36,8 +29,11 @@ function BottomTabBar() {
 export default function HomeNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Auth">
-        <Stack.Screen name="Auth" component={AuthScreen} />
+      <Stack.Navigator initialRouteName="WelcomeScreen" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="MasterKeyScreen" component={MasterKeyScreen} />
+        {/* Add other screens here */}
         <Stack.Screen name="Main" component={BottomTabBar} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
