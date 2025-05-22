@@ -1,6 +1,6 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Avatar, IconButton, Button, TouchableRipple } from 'react-native-paper';
+import {SafeAreaView, View, Text, StyleSheet, ScrollView} from 'react-native';
+import {Avatar, IconButton, Button, TouchableRipple} from 'react-native-paper';
 
 const user = {
   name: 'Eleanor Pena',
@@ -42,47 +42,66 @@ const coins = [
   },
 ];
 
-const WalletScreen = ({ navigation }: any) => {
+const WalletScreen = ({navigation}: any) => {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.headerBg}>
           <View style={styles.headerRow}>
             <Avatar.Image size={30} source={user.avatar} />
             <Text style={styles.userName}>{user.name}</Text>
             <View style={styles.bellWrapper}>
-              <IconButton icon="bell-outline" size={28} color="#111" style={styles.bellIcon} />
+              <IconButton
+                icon="bell-outline"
+                size={28}
+                color="#111"
+                style={styles.bellIcon}
+              />
               <View style={styles.badge} />
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 16 }}>
+        <View style={{marginTop: 16}}>
           {coins.map((coin, idx) => (
             <View key={coin.label} style={styles.coinCard}>
               <View style={styles.coinLeft}>
                 <Avatar.Icon
                   size={44}
                   icon={coin.icon}
-                  style={{ backgroundColor: coin.iconBg, marginRight: 12 }}
+                  style={{backgroundColor: coin.iconBg, marginRight: 12}}
                   color={coin.color}
                 />
                 <View>
-                  <Text style={styles.coinLabel}>{coin.label} <Text style={styles.coinCheck}>✔️</Text></Text>
+                  <Text style={styles.coinLabel}>{coin.label}</Text>
                   <Text style={styles.coinSub}>{coin.sub}</Text>
                 </View>
               </View>
               <Text style={styles.coinValue}>{coin.value}</Text>
             </View>
           ))}
-          <TouchableRipple style={styles.addCoinCard} onPress={() => {}} borderless>
+          <TouchableRipple
+            style={styles.addCoinCard}
+            onPress={() => {}}
+            borderless>
             <View style={styles.addCoinRow}>
-              <Avatar.Icon size={32} icon="plus" style={styles.addCoinIcon} color="#43B049" />
+              <Avatar.Icon
+                size={32}
+                icon="plus"
+                style={styles.addCoinIcon}
+                color="#43B049"
+              />
               <Text style={styles.addCoinText}>Add a coin your list</Text>
             </View>
           </TouchableRipple>
         </View>
-        <View style={{ flex: 1 }} />
-        <Button mode="contained" style={styles.issueBtn} labelStyle={styles.issueBtnLabel} onPress={() => {}}>
+        <View style={{flex: 1}} />
+        <Button
+          mode="contained"
+          style={styles.issueBtn}
+          labelStyle={styles.issueBtnLabel}
+          onPress={() => {}}>
           Issue your own privacy coin
         </Button>
       </ScrollView>
@@ -134,9 +153,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(255,255,255,0.25)',
+    backgroundColor: 'rgba(255,255,255,0.7)',
     borderWidth: 2,
-    borderColor: '#A7F3D0',
+    borderColor: 'rgba(255,255,255,0.7)',
     borderRadius: 22,
     padding: 16,
     marginHorizontal: 12,
@@ -147,37 +166,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   coinLabel: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#111',
   },
-  coinCheck: {
-    fontSize: 18,
-    color: '#43B049',
-    fontWeight: 'bold',
-  },
   coinSub: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#444',
     fontWeight: '500',
     marginTop: 2,
   },
   coinValue: {
-    fontSize: 20,
+    fontSize: 16,
     color: '#43B049',
     fontWeight: 'bold',
   },
   addCoinCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.25)',
-    borderWidth: 2,
-    borderColor: '#A7F3D0',
-    borderRadius: 22,
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.7)',
     padding: 12,
+    borderRadius: 16,
     marginHorizontal: 12,
-    marginBottom: 18,
-    marginTop: 8,
     justifyContent: 'center',
   },
   addCoinRow: {
@@ -191,14 +203,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   addCoinText: {
-    fontSize: 20,
+    fontSize: 16,
     color: '#43B049',
     fontWeight: 'bold',
   },
   issueBtn: {
     backgroundColor: '#43B049',
     borderRadius: 32,
-    paddingVertical: 18,
+    paddingVertical: 8,
     width: '90%',
     alignSelf: 'center',
     marginBottom: 24,
@@ -206,7 +218,7 @@ const styles = StyleSheet.create({
   },
   issueBtnLabel: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
   },
