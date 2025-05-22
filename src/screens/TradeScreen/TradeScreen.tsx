@@ -1,11 +1,18 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Avatar, IconButton, Button, TouchableRipple, Card } from 'react-native-paper';
+import {SafeAreaView, View, Text, StyleSheet, ScrollView} from 'react-native';
+import {
+  Avatar,
+  IconButton,
+  Button,
+  TouchableRipple,
+  Card,
+} from 'react-native-paper';
+import {CssView} from '../../components/CssView';
 
 const tabs = [
-  { label: 'Deposit', icon: 'arrow-down-bold-circle-outline' },
-  { label: 'Trade', icon: 'swap-horizontal', active: true },
-  { label: 'Add Liquidity', icon: 'wallet-plus-outline' },
+  {label: 'Deposit', icon: 'arrow-down-bold-circle-outline'},
+  {label: 'Trade', icon: 'swap-horizontal', active: true},
+  {label: 'Add Liquidity', icon: 'wallet-plus-outline'},
 ];
 
 const activities = [
@@ -47,92 +54,173 @@ const activities = [
   },
 ];
 
-const TradeScreen = ({ navigation }: any) => {
+const TradeScreen = ({navigation}: any) => {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.headerBg}>
           <View style={styles.headerRow}>
-            <IconButton icon="chevron-left" size={32} color="#111" onPress={() => navigation && navigation.goBack && navigation.goBack()} />
+            <IconButton
+              icon="chevron-left"
+              size={32}
+              color="#111"
+              onPress={() =>
+                navigation && navigation.goBack && navigation.goBack()
+              }
+            />
             <Text style={styles.headerTitle}>Trade</Text>
-            <View style={{ width: 32 }} />
+            <View style={{width: 32}} />
           </View>
         </View>
         <View style={styles.tabsRow}>
           {tabs.map((tab, idx) => (
-            <View key={tab.label} style={[styles.tabItem, tab.active && styles.tabItemActive]}>
-              <Avatar.Icon size={44} icon={tab.icon} style={[styles.tabIcon, tab.active && styles.tabIconActive]} color={tab.active ? '#43B049' : '#888'} />
-              <Text style={[styles.tabLabel, tab.active && styles.tabLabelActive]}>{tab.label}</Text>
+            <View
+              key={tab.label}
+              style={[styles.tabItem, tab.active && styles.tabItemActive]}>
+              <Avatar.Icon
+                size={44}
+                icon={tab.icon}
+                style={[styles.tabIcon, tab.active && styles.tabIconActive]}
+                color={tab.active ? '#43B049' : '#888'}
+              />
+              <Text
+                style={[styles.tabLabel, tab.active && styles.tabLabelActive]}>
+                {tab.label}
+              </Text>
             </View>
           ))}
         </View>
         <View style={styles.tradeCard}>
-          <View style={styles.tradeRow}>
-            <View style={{ flex: 1 }}>
+          <View style={styles.tradeItem}>
+            <CssView
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between">
               <Text style={styles.tradeLabel}>From</Text>
+            </CssView>
+            <CssView
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between">
               <Text style={styles.tradeValue}>0.0052</Text>
+              <View style={styles.tradeCoinBox}>
+                <Avatar.Icon
+                  size={32}
+                  icon="bitcoin"
+                  style={styles.tradeCoinIcon}
+                  color="#F7931A"
+                />
+                <Text style={styles.tradeCoinText}>pBTC</Text>
+                <Text style={styles.tradeCoinCheck}>✔️</Text>
+              </View>
+            </CssView>
+            <CssView
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between">
               <Text style={styles.tradeSubValue}>≈$1000.6</Text>
-            </View>
-            <View style={styles.tradeCoinBox}>
-              <Avatar.Icon size={32} icon="bitcoin" style={styles.tradeCoinIcon} color="#F7931A" />
-              <Text style={styles.tradeCoinText}>pBTC</Text>
-              <Text style={styles.tradeCoinCheck}>✔️</Text>
-            </View>
-            <View style={styles.tradeBalanceBox}>
-              <Text style={styles.tradeBalanceLabel}>Balance:</Text>
-              <Text style={styles.tradeBalanceValue}>0.01</Text>
-            </View>
+              <View style={styles.tradeBalanceBox}>
+                <Text style={styles.tradeBalanceLabel}>Balance: 0.01</Text>
+              </View>
+            </CssView>
           </View>
           <View style={styles.tradeSwitchRow}>
-            <Avatar.Icon size={36} icon="swap-vertical" style={styles.tradeSwitchIcon} color="#43B049" />
+            <Avatar.Icon
+              size={40}
+              icon="swap-vertical"
+              style={styles.tradeSwitchIcon}
+              color="#FFF"
+            />
           </View>
-          <View style={styles.tradeRow}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.tradeLabel}>To</Text>
-              <Text style={styles.tradeValue}>100.05</Text>
+          <View style={[styles.tradeItem, {marginTop: 8}]}>
+            <View style={styles.tradeRow}>
+              <View style={{flex: 1}}>
+                <Text style={styles.tradeLabel}>To</Text>
+                <Text style={styles.tradeValue}>100.05</Text>
+              </View>
+              <View style={styles.tradeCoinBox}>
+                <Avatar.Icon
+                  size={32}
+                  icon="currency-usd"
+                  style={styles.tradeCoinIcon}
+                  color="#26A17B"
+                />
+                <Text style={styles.tradeCoinText}>pUSDT</Text>
+                <Text style={styles.tradeCoinCheck}>✔️</Text>
+              </View>
             </View>
-            <View style={styles.tradeCoinBox}>
-              <Avatar.Icon size={32} icon="currency-usd" style={styles.tradeCoinIcon} color="#26A17B" />
-              <Text style={styles.tradeCoinText}>pUSDT</Text>
-              <Text style={styles.tradeCoinCheck}>✔️</Text>
+          </View>
+          <View style={[styles.tradeItem, {marginTop: 8}]}>
+            <View style={styles.tradeInfoRow}>
+              <Text style={styles.tradeInfoLabel}>Exchange Rate</Text>
+              <Text style={styles.tradeInfoValue}>1 USDT = 0,215 BNB</Text>
+            </View>
+            <View style={styles.tradePoolBox}>
+              <Text style={styles.tradePoolLabel}>Pool Size</Text>
+              <Text style={styles.tradePoolValue}>
+                1.5696 pBTC + 9,695.5681 pUSDT
+              </Text>
             </View>
           </View>
-          <View style={styles.tradeInfoRow}>
-            <Text style={styles.tradeInfoLabel}>Exchange Rate</Text>
-            <Text style={styles.tradeInfoValue}>1 USDT = 0,215 BNB</Text>
-          </View>
-          <View style={styles.tradePoolBox}>
-            <Text style={styles.tradePoolLabel}>Pool Size</Text>
-            <Text style={styles.tradePoolValue}>1.5696 pBTC + 9,695.5681 pUSDT</Text>
-          </View>
-          <Button mode="contained" style={styles.tradeBtn} labelStyle={styles.tradeBtnLabel} onPress={() => {}}>
+          <Button
+            mode="contained"
+            style={styles.tradeBtn}
+            labelStyle={styles.tradeBtnLabel}
+            onPress={() => {}}>
             Trade
           </Button>
         </View>
-        <Text style={styles.activityHeader}>Recent Activity</Text>
-        <Button mode="text" labelStyle={styles.viewAllBtnLabel} style={styles.viewAllBtn} onPress={() => {}}>
-          View all
-        </Button>
+        <CssView
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between">
+          <Text style={styles.activityHeader}>Recent Activity</Text>
+          <Button
+            mode="text"
+            labelStyle={styles.viewAllBtnLabel}
+            style={styles.viewAllBtn}
+            onPress={() => {}}>
+            View all
+          </Button>
+        </CssView>
         {activities.map((activity, idx) => (
           <Card key={idx} style={styles.activityCard}>
             <View style={styles.activityRow}>
-              <Avatar.Icon size={36} icon={activity.icon} style={{ backgroundColor: '#fff' }} color={activity.iconColor} />
-              <View style={{ flex: 1, marginLeft: 12 }}>
-                <Text style={styles.activityType}>{activity.type}</Text>
+              <View style={{flex: 1, marginLeft: 12, gap: 8}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Avatar.Image
+                    size={24}
+                    source={require('../../assets/usdt.png')}
+                    style={{backgroundColor: '#fff'}}
+                  />
+                  <Text style={styles.activityType}>{activity.type}</Text>
+                </View>
                 <Text style={styles.activityId}>ID {activity.id}</Text>
                 <Text style={styles.activityAmount}>{activity.amount}</Text>
               </View>
-              <View style={{ alignItems: 'flex-end' }}>
+              <View style={{alignItems: 'flex-end', gap: 8}}>
                 <Text style={styles.activityAccount}>{activity.account}</Text>
                 <Text style={styles.activityDate}>{activity.date}</Text>
-                <View style={[styles.statusBadge, { backgroundColor: activity.statusColor }]}> 
-                  <Text style={[styles.statusBadgeText, { color: activity.statusTextColor }]}>{activity.status}</Text>
+                <View
+                  style={[
+                    styles.statusBadge,
+                    {backgroundColor: activity.statusColor},
+                  ]}>
+                  <Text
+                    style={[
+                      styles.statusBadgeText,
+                      {color: activity.statusTextColor},
+                    ]}>
+                    {activity.status}
+                  </Text>
                 </View>
               </View>
             </View>
           </Card>
         ))}
-        <View style={{ height: 80 }} />
+        <View style={{height: 80}} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -183,7 +271,7 @@ const styles = StyleSheet.create({
     borderColor: '#A7F3D0',
     backgroundColor: '#fff',
     shadowColor: '#43B049',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.12,
     shadowRadius: 8,
     elevation: 4,
@@ -206,12 +294,15 @@ const styles = StyleSheet.create({
   },
   tradeCard: {
     marginHorizontal: 12,
-    borderRadius: 22,
-    backgroundColor: 'rgba(255,255,255,0.25)',
-    borderWidth: 2,
-    borderColor: '#A7F3D0',
-    padding: 18,
+
     marginBottom: 18,
+  },
+  tradeItem: {
+    borderRadius: 22,
+    backgroundColor: 'rgba(255,255,255, 0.5)',
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255, 0.75)',
+    padding: 18,
   },
   tradeRow: {
     flexDirection: 'row',
@@ -242,10 +333,8 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    marginLeft: 8,
-    marginRight: 8,
-    borderWidth: 2,
-    borderColor: '#A7F3D0',
+    borderWidth: 1,
+    borderColor: 'rgba(34, 185, 88, 1)',
   },
   tradeCoinIcon: {
     backgroundColor: 'transparent',
@@ -278,11 +367,16 @@ const styles = StyleSheet.create({
   tradeSwitchRow: {
     alignItems: 'center',
     marginVertical: 8,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 100,
+    zIndex: 999,
   },
   tradeSwitchIcon: {
-    backgroundColor: '#fff',
-    borderWidth: 2,
-    borderColor: '#A7F3D0',
+    backgroundColor: 'rgba(34, 185, 88, 1)',
+    borderWidth: 6,
+    borderColor: '#FFF',
   },
   tradeInfoRow: {
     flexDirection: 'row',
@@ -301,7 +395,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   tradePoolBox: {
-    backgroundColor: '#F8FFFB',
+    backgroundColor: 'rgba(245, 245, 245, 1)',
     borderRadius: 14,
     padding: 12,
     marginTop: 4,
@@ -319,40 +413,33 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   tradeBtn: {
-    backgroundColor: '#43B049',
-    borderRadius: 32,
-    paddingVertical: 14,
+    backgroundColor: 'rgba(34, 185, 88, 1)',
+    borderRadius: 99,
+    paddingVertical: 8,
     width: '100%',
     alignSelf: 'center',
-    marginTop: 8,
-    marginBottom: 4,
+    marginTop: 16,
   },
   tradeBtnLabel: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
   },
   activityHeader: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#111',
+    color: '#000',
     marginLeft: 16,
-    marginTop: 8,
-    marginBottom: 0,
   },
   viewAllBtn: {
-    position: 'absolute',
-    right: 16,
-    top: 8,
-    zIndex: 1,
     backgroundColor: 'transparent',
-    elevation: 0,
+    marginRight: 16,
   },
   viewAllBtnLabel: {
     color: '#43B049',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   activityCard: {
     marginHorizontal: 16,
@@ -367,7 +454,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activityType: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#111',
   },
@@ -401,8 +488,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   statusBadgeText: {
-    fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 12,
   },
 });
 
