@@ -1,15 +1,14 @@
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Text, View} from 'react-native';
-import WelcomeScreen from '../screens/WelcomeScreen/WelcomeScreen';
+import { Avatar } from 'react-native-paper';
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import MasterKeyScreen from '../screens/MasterkeyScreen/MasterKeyScreen';
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
-import {Avatar} from 'react-native-paper';
-import WalletScreen from '../screens/WalletScreen/WalletScreen';
 import TradeScreen from '../screens/TradeScreen/TradeScreen';
+import WalletScreen from '../screens/WalletScreen/WalletScreen';
+import WelcomeScreen from '../screens/WelcomeScreen/WelcomeScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

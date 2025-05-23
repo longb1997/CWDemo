@@ -1,13 +1,12 @@
 import React from 'react';
-import {SafeAreaView, View, Text, StyleSheet, ScrollView} from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   Avatar,
-  IconButton,
   Button,
-  TouchableRipple,
-  Card,
+  IconButton
 } from 'react-native-paper';
-import {CssView} from '../../components/CssView';
+import { CommonCard } from '../../components/CommonCard';
+import { CssView } from '../../components/CssView';
 
 const tabs = [
   {label: 'Deposit', icon: 'arrow-down-bold-circle-outline'},
@@ -186,7 +185,7 @@ const TradeScreen = ({navigation}: any) => {
           </Button>
         </CssView>
         {activities.map((activity, idx) => (
-          <Card key={idx} style={styles.activityCard}>
+          <CommonCard key={idx}>
             <View style={styles.activityRow}>
               <View style={{flex: 1, marginLeft: 12, gap: 8}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -218,7 +217,7 @@ const TradeScreen = ({navigation}: any) => {
                 </View>
               </View>
             </View>
-          </Card>
+          </CommonCard>
         ))}
         <View style={{height: 80}} />
       </ScrollView>

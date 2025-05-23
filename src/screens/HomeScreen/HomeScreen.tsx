@@ -14,6 +14,7 @@ import {
   IconButton,
   TouchableRipple,
 } from 'react-native-paper';
+import {CommonCard} from '../../components/CommonCard';
 
 const user = {
   name: 'Eleanor Pena',
@@ -155,7 +156,7 @@ const HomeScreen = ({navigation}: any) => {
           </Button>
         </View>
         {activities.map((activity, idx) => (
-          <Card key={idx} style={styles.activityCard}>
+          <CommonCard>
             <View style={styles.activityRow}>
               <View style={{flex: 1, marginLeft: 12, gap: 8}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -187,7 +188,7 @@ const HomeScreen = ({navigation}: any) => {
                 </View>
               </View>
             </View>
-          </Card>
+          </CommonCard>
         ))}
         <View style={{height: 80}} />
       </ScrollView>
