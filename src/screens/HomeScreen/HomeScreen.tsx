@@ -156,7 +156,7 @@ const HomeScreen = ({navigation}: any) => {
           </Button>
         </View>
         {activities.map((activity, idx) => (
-          <CommonCard>
+          <CommonCard key={idx}>
             <View style={styles.activityRow}>
               <View style={{flex: 1, marginLeft: 12, gap: 8}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>

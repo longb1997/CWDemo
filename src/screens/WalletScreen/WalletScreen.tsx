@@ -1,5 +1,12 @@
 import React from 'react';
-import {SafeAreaView, View, Text, StyleSheet, ScrollView} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {Avatar, IconButton, Button, TouchableRipple} from 'react-native-paper';
 
 const user = {
@@ -43,6 +50,17 @@ const coins = [
 ];
 
 const WalletScreen = ({navigation}: any) => {
+  const handlePress = (token: any) => {
+    // Handle the press event here
+    console.log('Coin pressed');
+    navigation.navigate('WalletDetailScreen', {
+      token,
+    });
+  };
+  const handleAddCoin = () => {
+    // Handle the add coin event here
+    console.log('Add coin pressed');
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -65,7 +83,10 @@ const WalletScreen = ({navigation}: any) => {
         </View>
         <View style={{marginTop: 16}}>
           {coins.map((coin, idx) => (
-            <View key={coin.label} style={styles.coinCard}>
+            <TouchableOpacity
+              onPress={() => handlePress(coin)}
+              key={coin.label}
+              style={styles.coinCard}>
               <View style={styles.coinLeft}>
                 <Avatar.Icon
                   size={44}
@@ -79,11 +100,11 @@ const WalletScreen = ({navigation}: any) => {
                 </View>
               </View>
               <Text style={styles.coinValue}>{coin.value}</Text>
-            </View>
+            </TouchableOpacity>
           ))}
           <TouchableRipple
             style={styles.addCoinCard}
-            onPress={() => {}}
+            onPress={handleAddCoin}
             borderless>
             <View style={styles.addCoinRow}>
               <Avatar.Icon

@@ -9,6 +9,7 @@ import MasterKeyScreen from '../screens/MasterkeyScreen/MasterKeyScreen';
 import TradeScreen from '../screens/TradeScreen/TradeScreen';
 import WalletScreen from '../screens/WalletScreen/WalletScreen';
 import WelcomeScreen from '../screens/WelcomeScreen/WelcomeScreen';
+import WalletDetailScreen from '../screens/WalletDetailScreen/WalletDetailScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -71,6 +72,7 @@ export default function HomeNavigator() {
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="MasterKeyScreen" component={MasterKeyScreen} />
+        <Stack.Screen name="WalletDetailScreen" component={WalletDetailScreen} />
         {/* Add other screens here */}
         <Stack.Screen
           name="Main"
