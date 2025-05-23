@@ -1,17 +1,72 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, {useCallback, useState} from 'react';
 import {
-  Avatar,
-  Button,
-  IconButton
-} from 'react-native-paper';
-import { CommonCard } from '../../components/CommonCard';
-import { CssView } from '../../components/CssView';
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+  Alert,
+} from 'react-native';
+import {Avatar, Button, Icon, IconButton} from 'react-native-paper';
+import {CommonCard} from '../../components/CommonCard';
+import {CssView} from '../../components/CssView';
+import {SelectTokenModal} from './SelectTokenModal';
 
 const tabs = [
   {label: 'Deposit', icon: 'arrow-down-bold-circle-outline'},
-  {label: 'Trade', icon: 'swap-horizontal', active: true},
+  {label: 'Trade', icon: 'swap-horizontal'},
   {label: 'Add Liquidity', icon: 'wallet-plus-outline'},
+];
+
+// Mock tokens data (should match SelectTokenModal)
+const tokens = [
+  {
+    id: '1',
+    name: 'Bitcoin',
+    network: 'Bitcoin',
+    tokenName: 'BTC',
+    icon: require('../../assets/btc.png'),
+    balance: 0.01,
+    priceToUsdt: 1000,
+  },
+  {
+    id: '2',
+    name: 'Ethereum',
+    network: 'ERC20',
+    tokenName: 'ETH',
+    icon: require('../../assets/eth.png'),
+    balance: 1,
+    priceToUsdt: 500,
+  },
+  {
+    id: '3',
+    name: 'Tether',
+    network: 'ERC20',
+    tokenName: 'USDT',
+    icon: require('../../assets/usdt.png'),
+    balance: 1200,
+    priceToUsdt: 1,
+  },
+  {
+    id: '4',
+    name: 'Binance',
+    network: 'BSC20',
+    tokenName: 'BNB',
+    icon: require('../../assets/bnb.png'),
+    balance: 1200,
+    priceToUsdt: 4.65,
+  },
+  {
+    id: '5',
+    name: 'Tron',
+    network: 'TRC20',
+    tokenName: 'TRX',
+    icon: require('../../assets/tron.png'),
+    balance: 1200,
+    priceToUsdt: 0.11,
+  },
 ];
 
 const activities = [
@@ -54,41 +109,111 @@ const activities = [
 ];
 
 const TradeScreen = ({navigation}: any) => {
+  const [showSelectTokenModal, setShowSelectTokenModal] = React.useState(false);
+
+  // Default: BTC -> USDT
+  const [fromToken, setFromToken] = useState(tokens[0]);
+  const [toToken, setToToken] = useState(tokens[2]);
+
+  // Mock input amount
+  const [fromAmount, setFromAmount] = useState(0);
+  const [toAmount, setToAmount] = useState(0);
+  const [exchangeRate, setExchangeRate] = useState(0);
+
+  const onSwapPositionToken = useCallback(() => {
+    setFromToken(toToken);
+    setToToken(fromToken);
+    setFromAmount(toAmount);
+    setToAmount(fromAmount);
+  }, [fromToken, toToken, fromAmount, toAmount]);
+
+  // Track which token is being selected ('from' or 'to')
+  const [selectingTokenType, setSelectingTokenType] = useState<'from' | 'to'>(
+    'from',
+  );
+
+  // Show modal for selecting 'from' token
+  const showSelectFromTokenModal = () => {
+    setSelectingTokenType('from');
+    setShowSelectTokenModal(true);
+  };
+
+  // Show modal for selecting 'to' token
+  const showSelectToTokenModal = () => {
+    setSelectingTokenType('to');
+    setShowSelectTokenModal(true);
+  };
+
+  // Select token for 'from' or 'to'
+  const handleSelectToken = (token: any) => {
+    if (selectingTokenType === 'from') {
+      setFromToken(token);
+    } else {
+      setToToken(token);
+    }
+  };
+
+  // Calculate exchange rate and toAmount
+  React.useEffect(() => {
+    // If either token is missing, skip
+    if (!fromToken || !toToken) return;
+    // Use priceToUsdt for both tokens
+    const fromPrice = fromToken.priceToUsdt || 1;
+    const toPrice = toToken.priceToUsdt || 1;
+    // Exchange rate: 1 fromToken = ? toToken
+    const rate = fromPrice / toPrice;
+    setExchangeRate(rate);
+    setToAmount(Number((Number(fromAmount || '0') * rate).toFixed(6)));
+  }, [fromToken, toToken, fromAmount]);
+
+  // Swap function (mock)
+  const swap = () => {
+    // For demo, just log the swap
+    console.log(
+      `Swapping ${fromAmount} ${fromToken.tokenName} to ${toAmount} ${toToken.tokenName} at rate ${exchangeRate}`,
+    );
+    Alert.alert(
+      'Swap Successful',
+      `You have swapped ${fromAmount} ${fromToken.tokenName} to ${toAmount} ${toToken.tokenName}`,
+      [{text: 'OK', onPress: () => setFromAmount(0)}],
+    );
+    // Here you could update balances, show a toast, etc.
+  };
+  // Track active tab
+  const [activeTab, setActiveTab] = useState(1); // 0: Deposit, 1: Trade, 2: Add Liquidity
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         showsVerticalScrollIndicator={false}>
-        <View style={styles.headerBg}>
-          <View style={styles.headerRow}>
-            <IconButton
-              icon="chevron-left"
-              size={32}
-              color="#111"
-              onPress={() =>
-                navigation && navigation.goBack && navigation.goBack()
-              }
-            />
-            <Text style={styles.headerTitle}>Trade</Text>
-            <View style={{width: 32}} />
-          </View>
-        </View>
         <View style={styles.tabsRow}>
           {tabs.map((tab, idx) => (
-            <View
+            <TouchableOpacity
               key={tab.label}
-              style={[styles.tabItem, tab.active && styles.tabItemActive]}>
+              style={[
+                styles.tabItem,
+                activeTab === idx && styles.tabItemActive,
+              ]}
+              onPress={() => setActiveTab(idx)}
+              activeOpacity={0.8}>
               <Avatar.Icon
                 size={44}
                 icon={tab.icon}
-                style={[styles.tabIcon, tab.active && styles.tabIconActive]}
-                color={tab.active ? '#43B049' : '#888'}
+                style={[
+                  styles.tabIcon,
+                  activeTab === idx && styles.tabIconActive,
+                ]}
+                color={activeTab === idx ? '#43B049' : '#888'}
               />
               <Text
-                style={[styles.tabLabel, tab.active && styles.tabLabelActive]}>
+                style={[
+                  styles.tabLabel,
+                  activeTab === idx && styles.tabLabelActive,
+                ]}>
                 {tab.label}
               </Text>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
         <View style={styles.tradeCard}>
@@ -103,63 +228,82 @@ const TradeScreen = ({navigation}: any) => {
               flexDirection="row"
               alignItems="center"
               justifyContent="space-between">
-              <Text style={styles.tradeValue}>0.0052</Text>
-              <View style={styles.tradeCoinBox}>
-                <Avatar.Icon
-                  size={32}
-                  icon="bitcoin"
-                  style={styles.tradeCoinIcon}
-                  color="#F7931A"
-                />
-                <Text style={styles.tradeCoinText}>pBTC</Text>
-                <Text style={styles.tradeCoinCheck}>✔️</Text>
-              </View>
+              <TextInput
+                style={[styles.tradeValue, {minWidth: 60}]}
+                value={fromAmount.toString()}
+                keyboardType="numeric"
+                onChangeText={text => {
+                  setFromAmount(text);
+                }}
+                placeholder="0.00"
+                returnKeyType="done"
+              />
+              <TouchableOpacity
+                style={styles.tradeCoinBox}
+                onPress={showSelectFromTokenModal}>
+                <Icon size={24} source={fromToken.icon} />
+                <Text style={styles.tradeCoinText}>{fromToken.tokenName}</Text>
+              </TouchableOpacity>
             </CssView>
             <CssView
               flexDirection="row"
               alignItems="center"
               justifyContent="space-between">
-              <Text style={styles.tradeSubValue}>≈$1000.6</Text>
+              <Text style={styles.tradeSubValue}>
+                ≈${(fromAmount * (fromToken.priceToUsdt || 1)).toFixed(2)}
+              </Text>
               <View style={styles.tradeBalanceBox}>
-                <Text style={styles.tradeBalanceLabel}>Balance: 0.01</Text>
+                <Text style={styles.tradeBalanceLabel}>
+                  Balance: {fromToken.balance}
+                </Text>
               </View>
             </CssView>
           </View>
-          <View style={styles.tradeSwitchRow}>
+          <TouchableOpacity
+            onPress={onSwapPositionToken}
+            style={styles.tradeSwitchRow}>
             <Avatar.Icon
               size={40}
               icon="swap-vertical"
               style={styles.tradeSwitchIcon}
               color="#FFF"
             />
-          </View>
+          </TouchableOpacity>
           <View style={[styles.tradeItem, {marginTop: 8}]}>
             <View style={styles.tradeRow}>
               <View style={{flex: 1}}>
                 <Text style={styles.tradeLabel}>To</Text>
-                <Text style={styles.tradeValue}>100.05</Text>
-              </View>
-              <View style={styles.tradeCoinBox}>
-                <Avatar.Icon
-                  size={32}
-                  icon="currency-usd"
-                  style={styles.tradeCoinIcon}
-                  color="#26A17B"
+                <TextInput
+                  style={[styles.tradeValue, {minWidth: 60}]}
+                  value={toAmount.toString()}
+                  keyboardType="numeric"
+                  onChangeText={text => {
+                    setToAmount(text);
+                  }}
+                  placeholder="0.00"
+                  returnKeyType="done"
                 />
-                <Text style={styles.tradeCoinText}>pUSDT</Text>
-                <Text style={styles.tradeCoinCheck}>✔️</Text>
               </View>
+              <TouchableOpacity
+                style={styles.tradeCoinBox}
+                onPress={showSelectToTokenModal}>
+                <Icon size={24} source={toToken.icon} />
+                <Text style={styles.tradeCoinText}>{toToken.tokenName}</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={[styles.tradeItem, {marginTop: 8}]}>
             <View style={styles.tradeInfoRow}>
               <Text style={styles.tradeInfoLabel}>Exchange Rate</Text>
-              <Text style={styles.tradeInfoValue}>1 USDT = 0,215 BNB</Text>
+              <Text style={styles.tradeInfoValue}>
+                1 {fromToken.tokenName} = {exchangeRate.toFixed(6)}{' '}
+                {toToken.tokenName}
+              </Text>
             </View>
             <View style={styles.tradePoolBox}>
               <Text style={styles.tradePoolLabel}>Pool Size</Text>
               <Text style={styles.tradePoolValue}>
-                1.5696 pBTC + 9,695.5681 pUSDT
+                1.5696 BTC + 9,695.5681 USDT
               </Text>
             </View>
           </View>
@@ -167,7 +311,7 @@ const TradeScreen = ({navigation}: any) => {
             mode="contained"
             style={styles.tradeBtn}
             labelStyle={styles.tradeBtnLabel}
-            onPress={() => {}}>
+            onPress={swap}>
             Trade
           </Button>
         </View>
@@ -192,7 +336,7 @@ const TradeScreen = ({navigation}: any) => {
                   <Avatar.Image
                     size={24}
                     source={require('../../assets/usdt.png')}
-                    style={{backgroundColor: '#fff'}}
+                    style={{backgroundColor: '#fff', marginRight: 8}}
                   />
                   <Text style={styles.activityType}>{activity.type}</Text>
                 </View>
@@ -219,8 +363,12 @@ const TradeScreen = ({navigation}: any) => {
             </View>
           </CommonCard>
         ))}
-        <View style={{height: 80}} />
       </ScrollView>
+      <SelectTokenModal
+        visible={showSelectTokenModal}
+        onSelectToken={handleSelectToken}
+        onClose={() => setShowSelectTokenModal(false)}
+      />
     </SafeAreaView>
   );
 };
@@ -258,14 +406,17 @@ const styles = StyleSheet.create({
   },
   tabItem: {
     flex: 1,
+    height: 97,
+    borderWidth: 3,
+    borderColor: '#F8FFFB',
     alignItems: 'center',
     backgroundColor: '#F8FFFB',
     borderRadius: 18,
     padding: 10,
     marginHorizontal: 4,
-    borderWidth: 0,
   },
   tabItemActive: {
+    height: 97,
     borderWidth: 3,
     borderColor: '#A7F3D0',
     backgroundColor: '#fff',
@@ -283,7 +434,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E6FFE6',
   },
   tabLabel: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#888',
     fontWeight: '600',
   },
@@ -334,6 +485,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderWidth: 1,
     borderColor: 'rgba(34, 185, 88, 1)',
+    gap: 4,
   },
   tradeCoinIcon: {
     backgroundColor: 'transparent',
@@ -463,9 +615,9 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   activityAmount: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#111',
+    color: '#262626',
     marginBottom: 2,
   },
   activityAccount: {
