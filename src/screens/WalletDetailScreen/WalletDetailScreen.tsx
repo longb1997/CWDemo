@@ -1,4 +1,5 @@
-import React, {useCallback} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,10 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Avatar, Button, Icon} from 'react-native-paper';
-import {CssView} from '../../components/CssView';
-import {useNavigation} from '@react-navigation/native';
-import {CommonCard} from '../../components/CommonCard';
+import { Button, Icon } from 'react-native-paper';
+import { CssView } from '../../components/CssView';
 
 const tabs = [
   {label: 'Send', icon: require('../../assets/Send.png')},
