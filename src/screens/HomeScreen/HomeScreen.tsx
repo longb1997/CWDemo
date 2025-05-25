@@ -163,7 +163,7 @@ const HomeScreen = ({navigation}: any) => {
                   <Avatar.Image
                     size={24}
                     source={require('../../assets/usdt.png')}
-                    style={{backgroundColor: '#fff'}}
+                    style={{backgroundColor: '#fff', marginRight: 8}}
                   />
                   <Text style={styles.activityType}>{activity.type}</Text>
                 </View>

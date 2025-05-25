@@ -1,8 +1,8 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import { Avatar } from 'react-native-paper';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useCallback, useMemo} from 'react';
+import {Avatar, Icon} from 'react-native-paper';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import MasterKeyScreen from '../screens/MasterkeyScreen/MasterKeyScreen';
@@ -10,52 +10,68 @@ import TradeScreen from '../screens/TradeScreen/TradeScreen';
 import WalletScreen from '../screens/WalletScreen/WalletScreen';
 import WelcomeScreen from '../screens/WelcomeScreen/WelcomeScreen';
 import WalletDetailScreen from '../screens/WalletDetailScreen/WalletDetailScreen';
+import {CustomTabBar} from '../components/CustomTabBar';
+import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function BottomTabBar() {
+  const renderCustomTabBar = useCallback(props => {
+    return <CustomTabBar {...props} />;
+  }, []);
+
+  const options = useMemo(() => {
+    return {
+      Home: {
+        title: 'Home',
+        tabBarIcon: ({focused}: {focused: boolean}) => (
+          <Icon
+            size={24}
+            source={require('../assets/home-2.png')}
+            color={focused ? '#22B958' : '#888'}
+          />
+        ),
+      },
+      Wallet: {
+        title: 'Wallet',
+        tabBarIcon: ({focused}: {focused: boolean}) => (
+          <Icon
+            size={24}
+            source={require('../assets/wallet-3.png')}
+            color={focused ? '#22B958' : '#888'}
+          />
+        ),
+      },
+      Trade: {
+        title: 'Trade',
+        tabBarIcon: ({focused}: {focused: boolean}) => (
+          <Icon
+            size={24}
+            source={require('../assets/candle.png')}
+            color={focused ? '#22B958' : '#888'}
+          />
+        ),
+      },
+    };
+  }, []);
+
   return (
-    <Tab.Navigator screenOptions={{headerShown: false}}>
+    <Tab.Navigator
+      screenOptions={{headerShown: false}}
+      tabBar={renderCustomTabBar}>
       <Tab.Screen
-        options={{
-          tabBarIcon: ({focused}) => (
-            <Avatar.Icon
-              size={24}
-              icon="home"
-              color={focused ? '#000' : '#888'}
-              style={{backgroundColor: 'transparent'}}
-            />
-          ),
-        }}
+        options={options.Home}
         name="HomeScreen"
         component={HomeScreen}
       />
       <Tab.Screen
-        options={{
-          tabBarIcon: ({focused}) => (
-            <Avatar.Icon
-              size={24}
-              icon="wallet"
-              color={focused ? '#000' : '#888'}
-              style={{backgroundColor: 'transparent'}}
-            />
-          ),
-        }}
+        options={options.Wallet}
         name="WalletScreen"
         component={WalletScreen}
       />
-       <Tab.Screen
-        options={{
-          tabBarIcon: ({focused}) => (
-            <Avatar.Icon
-              size={24}
-              icon="wallet"
-              color={focused ? '#000' : '#888'}
-              style={{backgroundColor: 'transparent'}}
-            />
-          ),
-        }}
+      <Tab.Screen
+        options={options.Trade}
         name="TradeScreen"
         component={TradeScreen}
       />
@@ -65,14 +81,17 @@ function BottomTabBar() {
 
 export default function HomeNavigator() {
   return (
-    <NavigationContainer>
+    <NavigationContainer onReady={() => SplashScreen.hide()}>
       <Stack.Navigator
         initialRouteName="Main"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="MasterKeyScreen" component={MasterKeyScreen} />
-        <Stack.Screen name="WalletDetailScreen" component={WalletDetailScreen} />
+        <Stack.Screen
+          name="WalletDetailScreen"
+          component={WalletDetailScreen}
+        />
         {/* Add other screens here */}
         <Stack.Screen
           name="Main"
