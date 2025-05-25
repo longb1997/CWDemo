@@ -14,6 +14,11 @@ import {CommonCard} from '../../components/CommonCard';
 import {CssView} from '../../components/CssView';
 import {SelectTokenModal} from './SelectTokenModal';
 
+const user = {
+  name: 'Eleanor Pena',
+  avatar: require('../../assets/avatar.png'), // Replace with your avatar asset
+};
+
 const tabs = [
   {label: 'Deposit', icon: 'arrow-down-bold-circle-outline'},
   {label: 'Trade', icon: 'swap-horizontal'},
@@ -187,6 +192,21 @@ const TradeScreen = ({navigation}: any) => {
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         showsVerticalScrollIndicator={false}>
+        <View style={styles.headerBg}>
+          <View style={styles.headerRow}>
+            <Avatar.Image size={30} source={user.avatar} />
+            <Text style={styles.userName}>{user.name}</Text>
+            <View style={styles.bellWrapper}>
+              <IconButton
+                icon="bell-outline"
+                size={28}
+                color="#111"
+                style={styles.bellIcon}
+              />
+              <View style={styles.badge} />
+            </View>
+          </View>
+        </View>
         <View style={styles.tabsRow}>
           {tabs.map((tab, idx) => (
             <TouchableOpacity
@@ -384,18 +404,34 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 32,
   },
   headerRow: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 8,
-    marginBottom: 8,
   },
-  headerTitle: {
-    fontSize: 24,
+  userName: {
+    flex: 1,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#111',
-    textAlign: 'center',
-    flex: 1,
+    marginLeft: 16,
+  },
+  bellWrapper: {
+    marginLeft: 16,
+  },
+  bellIcon: {
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 24,
+  },
+  badge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: '#FF5252',
+    borderWidth: 2,
+    borderColor: '#fff',
   },
   tabsRow: {
     flexDirection: 'row',
@@ -521,7 +557,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: 100,
+    top: 116,
     zIndex: 999,
   },
   tradeSwitchIcon: {
