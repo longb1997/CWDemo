@@ -85,7 +85,7 @@ export default function HomeNavigator() {
   return (
     <NavigationContainer onReady={() => SplashScreen.hide()}>
       <Stack.Navigator
-        initialRouteName="InitVerifyPassphraseScreen"
+        initialRouteName="WelcomeScreen"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
