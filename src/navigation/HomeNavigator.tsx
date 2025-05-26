@@ -12,6 +12,8 @@ import WelcomeScreen from '../screens/WelcomeScreen/WelcomeScreen';
 import WalletDetailScreen from '../screens/WalletDetailScreen/WalletDetailScreen';
 import {CustomTabBar} from '../components/CustomTabBar';
 import SplashScreen from 'react-native-splash-screen';
+import InitMasterKeyPhraseScreen from '../screens/InitMasterKeyPhraseScreen';
+import InitVerifyPassphraseScreen from '../screens/InitVerifyPassphraseScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -83,11 +85,14 @@ export default function HomeNavigator() {
   return (
     <NavigationContainer onReady={() => SplashScreen.hide()}>
       <Stack.Navigator
-        initialRouteName="Main"
+        initialRouteName="InitVerifyPassphraseScreen"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="MasterKeyScreen" component={MasterKeyScreen} />
+        <Stack.Screen name="InitMasterKeyPhraseScreen" component={InitMasterKeyPhraseScreen} />
+        <Stack.Screen name="InitVerifyPassphraseScreen" component={InitVerifyPassphraseScreen} />
+
         <Stack.Screen
           name="WalletDetailScreen"
           component={WalletDetailScreen}
