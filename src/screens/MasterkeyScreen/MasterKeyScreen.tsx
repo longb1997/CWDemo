@@ -8,59 +8,62 @@ import {
   View,
 } from 'react-native';
 import {Checkbox} from 'react-native-paper';
+import Container from '../../components/Container';
+import {Header} from '../../components/Header';
+import {useNavigation} from '@react-navigation/native';
 // import { Ionicons } from '@expo/vector-icons';
 
-const MasterKeyScreen = ({navigation}: any) => {
+const MasterKeyScreen = () => {
+  const navigation = useNavigation();
   const [keyName, setKeyName] = useState('');
   const [accepted, setAccepted] = useState(true);
 
   const handleReady = () => {
     if (accepted) {
       // TODO: Navigate to next screen
-      if (navigation && navigation.navigate) {
-        navigation.navigate('ShowSeed');
-      }
+      navigation.navigate('InitMasterKeyPhraseScreen');
     }
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <Text style={styles.headerTitle}>Master key name</Text>
-        <View style={{width: 32}} />
-      </View>
-      <TextInput
-        style={styles.input}
-        placeholder="Master key name"
-        placeholderTextColor="#bbb"
-        value={keyName}
-        onChangeText={setKeyName}
-      />
-      <Text style={styles.infoText}>
-        The next screen will contain 12 special words that will allow you to
-        recover your funds.
-      </Text>
-      <Text style={styles.infoText}>
-        Be prepared to record them in a safe place. If anyone gains access to
-        them, they will gain access to your funds.
-      </Text>
-      <Pressable onPress={() => setAccepted(!accepted)} style={styles.checkboxRow}>
-        <Checkbox.Android
-          status={accepted ? 'checked' : 'unchecked'}
-          onPress={() => setAccepted(!accepted)}
-          color='#43B049'
+      <Header label="Master key name" />
+      <Container>
+        <TextInput
+          style={styles.input}
+          placeholder="Master key name"
+          placeholderTextColor="#bbb"
+          value={keyName}
+          onChangeText={setKeyName}
         />
-        <Text style={styles.checkboxLabel}>
-          I accept that if I lose these words,{'\n'}I will lose access to my
-          funds.
+        <Text style={styles.infoText}>
+          The next screen will contain 12 special words that will allow you to
+          recover your funds.
         </Text>
-      </Pressable>
-      <TouchableOpacity
-        style={[styles.button, !accepted && {opacity: 0.5}]}
-        onPress={handleReady}
-        disabled={!accepted}>
-        <Text style={styles.buttonText}>Ready</Text>
-      </TouchableOpacity>
+        <Text style={styles.infoText}>
+          Be prepared to record them in a safe place. If anyone gains access to
+          them, they will gain access to your funds.
+        </Text>
+        <Pressable
+          onPress={() => setAccepted(!accepted)}
+          style={styles.checkboxRow}>
+          <Checkbox.Android
+            status={accepted ? 'checked' : 'unchecked'}
+            onPress={() => setAccepted(!accepted)}
+            color="#43B049"
+          />
+          <Text style={styles.checkboxLabel}>
+            I accept that if I lose these words,{'\n'}I will lose access to my
+            funds.
+          </Text>
+        </Pressable>
+        <TouchableOpacity
+          style={[styles.button, !accepted && {opacity: 0.5}]}
+          onPress={handleReady}
+          disabled={!accepted}>
+          <Text style={styles.buttonText}>Ready</Text>
+        </TouchableOpacity>
+      </Container>
     </View>
   );
 };
@@ -69,9 +72,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E6FFE6',
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 30,
   },
   headerRow: {
     flexDirection: 'row',
@@ -90,24 +90,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     paddingHorizontal: 16,
-    paddingVertical: 14,
-    fontSize: 20,
+    paddingVertical: 12,
+    fontSize: 16,
     color: '#222',
     marginBottom: 32,
     borderWidth: 1,
     borderColor: '#eee',
+    height: 56,
   },
   infoText: {
-    fontSize: 20,
+    fontSize: 18,
     color: '#111',
     fontWeight: '600',
     marginBottom: 12,
   },
   checkboxRow: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginTop: 24,
-    marginBottom: 32,
+    marginTop: 48,
   },
   checkbox: {
     width: 32,
@@ -135,7 +134,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     bottom: 30,
-    left: 20,
     right: 20,
   },
   buttonText: {

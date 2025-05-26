@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {Header} from '../components/Header';
@@ -115,9 +116,10 @@ const InitVerifyPassphraseScreen = ({route}) => {
       if (!__DEV__) {
         validateWords();
       }
-
       setCreating(true);
-      handleCreate(data);
+      setTimeout(() => {
+        handleCreate(data);
+      }, 1000);
     } catch (e: any) {
       setError(e?.message || '');
       setCreating(false);
@@ -127,7 +129,7 @@ const InitVerifyPassphraseScreen = ({route}) => {
   const handleCreate = useCallback(
     _.debounce(async data => {
       try {
-        navigation.navigate('CreateMasterKeyScreen', {data});
+        navigation.navigate('TutorialScreen');
       } catch (e: any) {
         setError(e?.message || '');
       } finally {
@@ -184,8 +186,15 @@ const InitVerifyPassphraseScreen = ({route}) => {
         <Text style={[styles.desc, styles.userWords]}>{userWords}</Text>
         {!!error && <Text style={styles.error}>{error}</Text>}
       </ScrollView>
-      <TouchableOpacity style={styles.button} onPress={handleNext}>
-        <Text style={styles.buttonText}>Create master key</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleNext}
+        disabled={creating}>
+        {creating ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Create master key</Text>
+        )}
       </TouchableOpacity>
     </View>
   );

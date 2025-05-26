@@ -15,6 +15,7 @@ import {
   TouchableRipple,
 } from 'react-native-paper';
 import {CommonCard} from '../../components/CommonCard';
+import {useAuth} from '../../context/AuthContext';
 
 const user = {
   name: 'Eleanor Pena',
@@ -72,6 +73,8 @@ const activities = [
 ];
 
 const HomeScreen = ({navigation}: any) => {
+  const {logout} = useAuth();
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -202,6 +205,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E6FFE6',
   },
   headerBg: {
+    paddingTop: 12,
     paddingHorizontal: 16,
     borderBottomLeftRadius: 32,
     borderBottomRightRadius: 32,
@@ -357,14 +361,18 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   activityHeader: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#111',
+    color: '#000',
+  },
+  viewAllBtn: {
+    backgroundColor: 'transparent',
+    marginRight: 16,
   },
   viewAllBtnLabel: {
     color: '#43B049',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   activityCard: {
     marginHorizontal: 16,
@@ -389,9 +397,9 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   activityAmount: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#111',
+    color: '#262626',
     marginBottom: 2,
   },
   activityAccount: {
@@ -414,6 +422,18 @@ const styles = StyleSheet.create({
   },
   statusBadgeText: {
     fontSize: 12,
+  },
+  logoutButton: {
+    backgroundColor: '#FF6B6B',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    marginLeft: 8,
+  },
+  logoutText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600',
   },
 });
 

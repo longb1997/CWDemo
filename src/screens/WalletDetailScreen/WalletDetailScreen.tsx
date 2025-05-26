@@ -24,7 +24,12 @@ const WalletDetailScreen = ({route}) => {
   const onTabPress = useCallback((tab: any) => {
     // Handle tab press
     console.log('Tab pressed:', tab);
-  }, []);
+    if (tab === 'Receive') {
+      navigation.navigate('ReceiverScreen', { token });
+    } else if (tab === 'Send') {
+      // navigation.navigate('SendScreen', { token });
+    }
+  }, [navigation, token]);
 
   return (
     <SafeAreaView style={styles.container}>

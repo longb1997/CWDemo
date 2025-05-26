@@ -10,10 +10,14 @@ import TradeScreen from '../screens/TradeScreen/TradeScreen';
 import WalletScreen from '../screens/WalletScreen/WalletScreen';
 import WelcomeScreen from '../screens/WelcomeScreen/WelcomeScreen';
 import WalletDetailScreen from '../screens/WalletDetailScreen/WalletDetailScreen';
+import ReceiverScreen from '../screens/ReceiverScreen';
+import SendScreen from '../screens/SendScreen';
 import {CustomTabBar} from '../components/CustomTabBar';
 import SplashScreen from 'react-native-splash-screen';
 import InitMasterKeyPhraseScreen from '../screens/InitMasterKeyPhraseScreen';
 import InitVerifyPassphraseScreen from '../screens/InitVerifyPassphraseScreen';
+import TutorialScreen from '../screens/TutorialScreen';
+import {AuthProvider, useAuth} from '../context/AuthContext';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -81,29 +85,68 @@ function BottomTabBar() {
   );
 }
 
+// AuthRoute - Navigation for non-authenticated users
+function AuthRoute() {
+  return (
+    <Stack.Navigator
+      initialRouteName="WelcomeScreen"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="MasterKeyScreen" component={MasterKeyScreen} />
+      <Stack.Screen
+        name="InitMasterKeyPhraseScreen"
+        component={InitMasterKeyPhraseScreen}
+      />
+      <Stack.Screen
+        name="InitVerifyPassphraseScreen"
+        component={InitVerifyPassphraseScreen}
+      />
+      <Stack.Screen name="TutorialScreen" component={TutorialScreen} />
+    </Stack.Navigator>
+  );
+}
+
+// MainRoute - Navigation for authenticated users
+function MainRoute() {
+  return (
+    <Stack.Navigator
+      initialRouteName="Main"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen
+        name="Main"
+        component={BottomTabBar}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="WalletDetailScreen"
+        component={WalletDetailScreen}
+      />
+      <Stack.Screen
+        name="ReceiverScreen"
+        component={ReceiverScreen}
+      />
+      <Stack.Screen
+        name="SendScreen"
+        component={SendScreen}
+      />
+    </Stack.Navigator>
+  );
+}
+
+// Navigation Router - Conditionally renders routes based on auth status
+function NavigationRouter() {
+  const {isLogin} = useAuth();
+  
+  return isLogin ? <MainRoute /> : <AuthRoute />;
+}
+
 export default function HomeNavigator() {
   return (
-    <NavigationContainer onReady={() => SplashScreen.hide()}>
-      <Stack.Navigator
-        initialRouteName="WelcomeScreen"
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="MasterKeyScreen" component={MasterKeyScreen} />
-        <Stack.Screen name="InitMasterKeyPhraseScreen" component={InitMasterKeyPhraseScreen} />
-        <Stack.Screen name="InitVerifyPassphraseScreen" component={InitVerifyPassphraseScreen} />
-
-        <Stack.Screen
-          name="WalletDetailScreen"
-          component={WalletDetailScreen}
-        />
-        {/* Add other screens here */}
-        <Stack.Screen
-          name="Main"
-          component={BottomTabBar}
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer onReady={() => SplashScreen.hide()}>
+        <NavigationRouter />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }

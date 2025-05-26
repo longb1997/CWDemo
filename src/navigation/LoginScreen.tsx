@@ -1,19 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 
-const LoginScreen = ({ navigation }: any) => {
+const LoginScreen = ({navigation}: any) => {
   const handleEnterSecretPhrase = () => {
-    // TODO: Navigate to import/restore screen
-    if (navigation && navigation.navigate) {
-      navigation.navigate('ImportAccount');
-    }
+    navigation.navigate('ImportAccount');
   };
 
   const handleNewAccount = () => {
-    // TODO: Navigate to new account creation screen
-    if (navigation && navigation.navigate) {
-      navigation.navigate('NewAccount');
-    }
+    navigation.navigate('MasterKeyScreen');
   };
 
   return (
@@ -29,7 +23,9 @@ const LoginScreen = ({ navigation }: any) => {
         </Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.outlineButton} onPress={handleEnterSecretPhrase}>
+        <TouchableOpacity
+          style={styles.outlineButton}
+          onPress={handleEnterSecretPhrase}>
           <Text style={styles.outlineButtonText}>Enter secret phrase</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleNewAccount}>
