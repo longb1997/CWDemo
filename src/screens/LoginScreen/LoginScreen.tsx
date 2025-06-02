@@ -21,19 +21,19 @@ const LoginScreen = () => {
           source={require('../../assets/chameleon.png')}
           style={styles.logo}
         />
-        <Text style={styles.title}>Set up account</Text>
+        <Text style={styles.title}>Set up your Chameleon Wallet</Text>
         <Text style={styles.subtitle}>
-          Import an existing account or create a new one
+          Import an existing wallet or create a new one
         </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.outlineButton}
           onPress={handleEnterSecretPhrase}>
-          <Text style={styles.outlineButtonText}>Enter secret phrase</Text>
+          <Text style={styles.outlineButtonText}>Restore from secret phrase</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleNewAccount}>
-          <Text style={styles.buttonText}>New Account</Text>
+          <Text style={styles.buttonText}>Create a new account</Text>
         </TouchableOpacity>
       </View>
     </View>

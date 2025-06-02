@@ -23,7 +23,7 @@ const user = {
 };
 
 const actions = [
-  {label: 'Buy PRV', icon: 'cash-plus', color: '#8BC34A'},
+  {label: 'Buy CHML', icon: 'cash-plus', color: '#8BC34A'},
   {label: 'Issue', icon: 'lightbulb-on-outline', color: '#FFE082'},
   {label: 'Trade', icon: 'swap-horizontal', color: '#81D4FA'},
   {label: 'Shield', icon: 'shield-check', color: '#B39DDB'},

@@ -71,7 +71,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
-  wordStyle: {},
+  wordStyle: {
+    color: 'rgba(0, 0, 0, 0.5)',
+  },
   selectedText: {
     color: '#FFF',
   },
@@ -175,8 +177,8 @@ const InitVerifyPassphraseScreen = ({route}) => {
               <Text
                 key={word}
                 style={[
-                  wordsIndex.includes(index) && styles.selectedText,
                   styles.wordStyle,
+                  wordsIndex.includes(index) && styles.selectedText,
                 ]}>
                 {word}
               </Text>

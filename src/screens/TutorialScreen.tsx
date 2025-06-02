@@ -37,7 +37,7 @@ const TutorialScreen = memo(() => {
   const videos = [
     {
       video: 'video1',
-      title: 'Get started with Incognito.',
+      title: 'Get started with Chameleon.',
       sub: 'Learn how to quickly create a new wallet and get started.',
       thumbnail: 'https://placehold.co/120x80/43B049/fff?text=Wallet',
     },

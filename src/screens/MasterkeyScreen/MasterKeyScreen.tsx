@@ -37,12 +37,13 @@ const MasterKeyScreen = () => {
           onChangeText={setKeyName}
         />
         <Text style={styles.infoText}>
-          The next screen will contain 12 special words that will allow you to
-          recover your funds.
+          The next screen will show you a 12-word recovery phrase. This phrase
+          is the <Text style={{fontWeight: 'bold'}}>only way</Text> to restore
+          your wallet.
         </Text>
         <Text style={styles.infoText}>
-          Be prepared to record them in a safe place. If anyone gains access to
-          them, they will gain access to your funds.
+          Write it down and store it safely. Anyone with access to the recovery
+          phrase can control your funds.
         </Text>
         <Pressable
           onPress={() => setAccepted(!accepted)}
@@ -53,15 +54,15 @@ const MasterKeyScreen = () => {
             color="#43B049"
           />
           <Text style={styles.checkboxLabel}>
-            I accept that if I lose these words,{'\n'}I will lose access to my
-            funds.
+            I understand that losing this phrase means losing access to my
+            wallet.
           </Text>
         </Pressable>
         <TouchableOpacity
           style={[styles.button, !accepted && {opacity: 0.5}]}
           onPress={handleReady}
           disabled={!accepted}>
-          <Text style={styles.buttonText}>Ready</Text>
+          <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
       </Container>
     </View>
@@ -101,8 +102,8 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 18,
     color: '#111',
-    fontWeight: '600',
-    marginBottom: 12,
+    fontWeight: '400',
+    marginBottom: 32,
   },
   checkboxRow: {
     flexDirection: 'row',

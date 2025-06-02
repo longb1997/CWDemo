@@ -7,7 +7,14 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {Avatar, IconButton, Button, TouchableRipple} from 'react-native-paper';
+import {
+  Avatar,
+  IconButton,
+  Button,
+  TouchableRipple,
+  Icon,
+} from 'react-native-paper';
+import {CssView} from '../../components/CssView';
 
 const user = {
   name: 'Eleanor Pena',
@@ -16,15 +23,15 @@ const user = {
 
 const coins = [
   {
-    icon: 'incognito',
-    label: 'Privacy',
-    sub: 'Incognito',
-    value: '0.1 PRV',
+    icon: require('../../assets/chameleon.png'),
+    label: 'CHML',
+    sub: 'Chameleon',
+    value: '0.1 CHML',
     color: '#222',
     iconBg: '#111',
   },
   {
-    icon: 'ethereum',
+    icon: require('../../assets/eth.png'),
     label: 'Privacy ETH',
     sub: 'Ethereum',
     value: '0 pETH',
@@ -32,7 +39,7 @@ const coins = [
     iconBg: '#E6E9FF',
   },
   {
-    icon: 'bitcoin',
+    icon: require('../../assets/btc.png'),
     label: 'Privacy BTC',
     sub: 'Bitcoin',
     value: '0.01 pBTC',
@@ -40,7 +47,7 @@ const coins = [
     iconBg: '#FFF3E0',
   },
   {
-    icon: 'currency-usd',
+    icon: require('../../assets/usdt.png'),
     label: 'Privacy USDT',
     sub: 'ERC200',
     value: '0 pUSDT',
@@ -88,12 +95,12 @@ const WalletScreen = ({navigation}: any) => {
               key={coin.label}
               style={styles.coinCard}>
               <View style={styles.coinLeft}>
-                <Avatar.Icon
-                  size={44}
-                  icon={coin.icon}
-                  style={{backgroundColor: coin.iconBg, marginRight: 12}}
-                  color={coin.color}
-                />
+                <CssView borderRadius={22} overflow="hidden" marginRight={12}>
+                  <Icon
+                    size={32}
+                    source={coin.icon}
+                  />
+                </CssView>
                 <View>
                   <Text style={styles.coinLabel}>{coin.label}</Text>
                   <Text style={styles.coinSub}>{coin.sub}</Text>

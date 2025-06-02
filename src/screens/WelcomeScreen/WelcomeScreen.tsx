@@ -19,9 +19,9 @@ const WelcomeScreen = ({ navigation }: any) => {
           style={styles.logo}
         />
         <Text style={styles.title}>Welcome to</Text>
-        <Text style={styles.titleBold}>Mastertech Chameleon</Text>
+        <Text style={styles.titleBold}>Chameleon Network</Text>
         <Text style={styles.subtitle}>
-          Experience fast and private trading for you
+          Send, receive, and trade crypto — privately
         </Text>
       </View>
       <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
