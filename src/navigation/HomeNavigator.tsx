@@ -18,6 +18,7 @@ import InitMasterKeyPhraseScreen from '../screens/InitMasterKeyPhraseScreen';
 import InitVerifyPassphraseScreen from '../screens/InitVerifyPassphraseScreen';
 import TutorialScreen from '../screens/TutorialScreen';
 import {AuthProvider, useAuth} from '../context/AuthContext';
+import InitImportMasterKeyScreen from '../screens/InitImportMasterKeyScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -103,6 +104,10 @@ function AuthRoute() {
         component={InitVerifyPassphraseScreen}
       />
       <Stack.Screen name="TutorialScreen" component={TutorialScreen} />
+      <Stack.Screen
+        name="InitImporMasterKeyScreen"
+        component={InitImportMasterKeyScreen}
+      />
     </Stack.Navigator>
   );
 }
@@ -118,18 +123,9 @@ function MainRoute() {
         component={BottomTabBar}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name="WalletDetailScreen"
-        component={WalletDetailScreen}
-      />
-      <Stack.Screen
-        name="ReceiverScreen"
-        component={ReceiverScreen}
-      />
-      <Stack.Screen
-        name="SendScreen"
-        component={SendScreen}
-      />
+      <Stack.Screen name="WalletDetailScreen" component={WalletDetailScreen} />
+      <Stack.Screen name="ReceiverScreen" component={ReceiverScreen} />
+      <Stack.Screen name="SendScreen" component={SendScreen} />
     </Stack.Navigator>
   );
 }
@@ -137,7 +133,7 @@ function MainRoute() {
 // Navigation Router - Conditionally renders routes based on auth status
 function NavigationRouter() {
   const {isLogin} = useAuth();
-  
+
   return isLogin ? <MainRoute /> : <AuthRoute />;
 }
 
