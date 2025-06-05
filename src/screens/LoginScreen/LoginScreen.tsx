@@ -6,7 +6,7 @@ const LoginScreen = () => {
   const navigation = useNavigation();
   const handleEnterSecretPhrase = () => {
     // TODO: Navigate to import/restore screen
-    navigation.navigate('InitMasterKeyPhraseScreen');
+    navigation.navigate('InitImporMasterKeyScreen');
   };
 
   const handleNewAccount = () => {
@@ -30,7 +30,9 @@ const LoginScreen = () => {
         <TouchableOpacity
           style={styles.outlineButton}
           onPress={handleEnterSecretPhrase}>
-          <Text style={styles.outlineButtonText}>Restore from secret phrase</Text>
+          <Text style={styles.outlineButtonText}>
+            Restore from secret phrase
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleNewAccount}>
           <Text style={styles.buttonText}>Create a new account</Text>
