@@ -11,6 +11,7 @@ import {
 import Toast from 'react-native-simple-toast';
 import {Header} from '../components/Header';
 import {useNavigation} from '@react-navigation/native';
+import { ScreenContainer } from '../components/ScreenContainer';
 
 const styles = StyleSheet.create({
   desc: {
@@ -156,7 +157,7 @@ const InitVerifyPassphraseScreen = ({route}) => {
   }, [userWords]);
 
   return (
-    <View style={{flex: 1, backgroundColor: '#E6FFE6'}}>
+    <ScreenContainer style={{flex: 1, backgroundColor: '#E6FFE6'}}>
       <Header label="Verify passphrase" />
       <ScrollView
         contentContainerStyle={{paddingHorizontal: 16, marginTop: 16}}>
@@ -198,7 +199,7 @@ const InitVerifyPassphraseScreen = ({route}) => {
           <Text style={styles.buttonText}>Create master key</Text>
         )}
       </TouchableOpacity>
-    </View>
+    </ScreenContainer>
   );
 };
 

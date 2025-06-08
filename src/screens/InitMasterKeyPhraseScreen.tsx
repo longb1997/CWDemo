@@ -12,6 +12,7 @@ import ClipboardService from '../utils/ClipboardService';
 import {generateNewMnemonic} from '../services/wallet/mnemonicService';
 import {Header} from '../components/Header';
 import {Button} from 'react-native-paper';
+import { ScreenContainer } from '../components/ScreenContainer';
 
 const styles = StyleSheet.create({
   desc: {
@@ -86,7 +87,7 @@ const InitMasterKeyPhraseScreen = ({route}) => {
     ClipboardService.set(mnemonic, {copiedMessage: 'Phrase was copied.'});
   };
   return (
-    <View style={{flex: 1, backgroundColor: '#E6FFE6'}}>
+    <ScreenContainer style={{flex: 1, backgroundColor: '#E6FFE6'}}>
       <Header label="Master key phrase" />
       <ScrollView
         contentContainerStyle={{paddingHorizontal: 16, marginTop: 16}}>
@@ -130,7 +131,7 @@ const InitMasterKeyPhraseScreen = ({route}) => {
           <Text style={styles.buttonText}>I've saved my phrase</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </ScreenContainer>
   );
 };
 

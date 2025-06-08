@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { ScreenContainer } from '../../components/ScreenContainer';
 
 
 const WelcomeScreen = ({ navigation }: any) => {
@@ -12,7 +13,7 @@ const WelcomeScreen = ({ navigation }: any) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer style={styles.container}>
       <View style={styles.centerContent}>
         <Image
           source={require('../../assets/chameleon.png')}
@@ -27,7 +28,7 @@ const WelcomeScreen = ({ navigation }: any) => {
       <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
         <Text style={styles.buttonText}>Get started</Text>
       </TouchableOpacity>
-    </View>
+    </ScreenContainer>
   );
 };
 

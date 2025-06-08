@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import { ScreenContainer } from '../../components/ScreenContainer';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -15,7 +16,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer style={styles.container}>
       <View style={styles.centerContent}>
         <Image
           source={require('../../assets/chameleon.png')}
@@ -36,7 +37,7 @@ const LoginScreen = () => {
           <Text style={styles.buttonText}>Create a new account</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScreenContainer>
   );
 };
 

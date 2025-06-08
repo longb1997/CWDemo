@@ -4,6 +4,7 @@ import Container from '../components/Container';
 import {Header} from '../components/Header';
 import {Video} from '../components/Video';
 import {useAuth} from '../context/AuthContext';
+import { ScreenContainer } from '../components/ScreenContainer';
 
 const TutorialScreen = memo(() => {
   const [displayIndex, setDisplayIndex] = useState(0);
@@ -56,7 +57,7 @@ const TutorialScreen = memo(() => {
   ];
 
   return (
-    <Container>
+    <ScreenContainer>
       <Header label="Tutorial" />
       <ScrollView
         style={[
@@ -71,7 +72,7 @@ const TutorialScreen = memo(() => {
       <TouchableOpacity style={styles.button} onPress={onGoBack}>
         <Text style={styles.buttonText}>Let's go</Text>
       </TouchableOpacity>
-    </Container>
+    </ScreenContainer>
   );
 });
 

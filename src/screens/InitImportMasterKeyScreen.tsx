@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
+import { ScreenContainer } from '../components/ScreenContainer';
 
 const styles = StyleSheet.create({
   input: {
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 const InitImportMasterKeyScreen = memo(() => {
-  const {redirect, init: isInit} = useNavigationParams<{
+  const { redirect, init: isInit } = useNavigationParams<{
     redirect: string;
     init: boolean;
   }>();
@@ -58,7 +59,7 @@ const InitImportMasterKeyScreen = memo(() => {
           navigation.navigate(redirect || ROUTE_NAMES.MasterKeys, {
             refresh: new Date().getTime(),
           });
-        } else { 
+        } else {
           // TODO: REMOVE THIS WHEN APIs ready
           if (!__DEV__) {
             await initMasterKey(trimmedName, trimmedPhrase);
@@ -81,10 +82,7 @@ const InitImportMasterKeyScreen = memo(() => {
   }, [phrase, name]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      header="Import master key"
-      scrollable
-      contentStyle={globalStyled.defaultBorderSection}>
+    <ScreenContainer style={styles.container}>
       <Input
         onChangeText={setName}
         label="Master key name"
@@ -127,7 +125,7 @@ const InitImportMasterKeyScreen = memo(() => {
           _.trim(phrase || '').length === 0
         }
       />
-    </SafeAreaView>
+    </ScreenContainer>
   );
 });
 

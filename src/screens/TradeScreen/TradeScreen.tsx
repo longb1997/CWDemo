@@ -13,6 +13,7 @@ import {Avatar, Button, Icon, IconButton} from 'react-native-paper';
 import {CommonCard} from '../../components/CommonCard';
 import {CssView} from '../../components/CssView';
 import {SelectTokenModal} from './SelectTokenModal';
+import { ScreenContainer } from '../../components/ScreenContainer';
 
 const user = {
   name: 'Eleanor Pena',
@@ -188,7 +189,7 @@ const TradeScreen = ({navigation}: any) => {
   const [activeTab, setActiveTab] = useState(1); // 0: Deposit, 1: Trade, 2: Add Liquidity
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScreenContainer style={styles.container}>
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         showsVerticalScrollIndicator={false}>
@@ -389,7 +390,7 @@ const TradeScreen = ({navigation}: any) => {
         onSelectToken={handleSelectToken}
         onClose={() => setShowSelectTokenModal(false)}
       />
-    </SafeAreaView>
+    </ScreenContainer>
   );
 };
 

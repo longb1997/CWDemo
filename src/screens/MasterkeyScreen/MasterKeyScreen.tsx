@@ -11,6 +11,7 @@ import {Checkbox} from 'react-native-paper';
 import Container from '../../components/Container';
 import {Header} from '../../components/Header';
 import {useNavigation} from '@react-navigation/native';
+import { ScreenContainer } from '../../components/ScreenContainer';
 // import { Ionicons } from '@expo/vector-icons';
 
 const MasterKeyScreen = () => {
@@ -26,7 +27,7 @@ const MasterKeyScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer style={styles.container}>
       <Header label="Master key name" />
       <Container>
         <TextInput
@@ -65,7 +66,7 @@ const MasterKeyScreen = () => {
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
       </Container>
-    </View>
+    </ScreenContainer>
   );
 };
 
