@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {memo, useEffect, useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { memo, useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,8 +10,8 @@ import {
   Alert,
 } from 'react-native';
 import BtnScanQrCode from '../components/Button/BtnScanQrCode';
-import {CssView} from '../components/CssView';
-import {Header} from '../components/Header';
+import { CssView } from '../components/CssView';
+import { Header } from '../components/Header';
 
 // Mock data
 const MOCK_MASTER_KEYS = [
@@ -93,10 +93,6 @@ const styles = StyleSheet.create({
 });
 
 const InitImportMasterKeyScreen = memo(() => {
-  const { redirect, init: isInit } = useNavigationParams<{
-    redirect: string;
-    init: boolean;
-  }>();
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [phrase, setPhrase] = useState('');
@@ -208,9 +204,9 @@ const InitImportMasterKeyScreen = memo(() => {
         {!!error && <Text style={styles.error}>{error}</Text>}
       </CssView>
 
-      <View style={{position: 'relative', marginHorizontal: 16}}>
+      <View style={{ position: 'relative', marginHorizontal: 16 }}>
         <TextInput
-          style={[styles.input, {marginBottom: 16}]}
+          style={[styles.input, { marginBottom: 16 }]}
           placeholder="Recovery phrase (12 words)"
           placeholderTextColor="#bbb"
           value={phrase}
@@ -220,7 +216,7 @@ const InitImportMasterKeyScreen = memo(() => {
           autoCorrect={false}
         />
         <BtnScanQrCode
-          style={{position: 'absolute', right: 16, top: 16}}
+          style={{ position: 'absolute', right: 16, top: 16 }}
           onPress={handleScanQR}
         />
       </View>
