@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 import { Button, Icon } from 'react-native-paper';
 import { CssView } from '../../components/CssView';
+import { Header } from '../../components/Header';
 
 const tabs = [
   {label: 'Send', icon: require('../../assets/Send.png')},
   {label: 'Receive', icon: require('../../assets/Receive.png')},
-  {label: 'Shield', icon: require('../../assets/Shield.png')},
+  // {label: 'Shield', icon: require('../../assets/Shield.png')},
 ];
 
 const WalletDetailScreen = ({route}) => {
@@ -36,21 +37,7 @@ const WalletDetailScreen = ({route}) => {
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         showsVerticalScrollIndicator={false}>
-        <CssView flexDirection="row" alignItems="center" margin={8}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon source="chevron-left" size={32} color="#000" />
-          </TouchableOpacity>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              textAlign: 'center',
-              alignSelf: 'center',
-              flex: 1,
-            }}>
-            {token.label}
-          </Text>
-        </CssView>
+        <Header label={token.label}/>
         <View style={styles.tabsRow}>
           {tabs.map((tab, idx) => (
             <TouchableOpacity

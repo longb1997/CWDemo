@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -6,6 +6,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from 'react-native';
 import {
   Avatar,
@@ -24,13 +27,18 @@ const user = {
 
 const actions = [
   {label: 'Buy CHML', icon: 'cash-plus', color: '#8BC34A'},
-  {label: 'Issue', icon: 'lightbulb-on-outline', color: '#FFE082'},
+  {label: 'Mint', icon: 'lightbulb-on-outline', color: '#FFE082'},
   {label: 'Trade', icon: 'swap-horizontal', color: '#81D4FA'},
   {label: 'Shield', icon: 'shield-check', color: '#B39DDB'},
   {label: 'Send', icon: 'arrow-top-right', color: '#FF8A80'},
   {label: 'Receive', icon: 'arrow-bottom-left', color: '#A5D6A7'},
   {label: 'pApp', icon: 'dots-horizontal', color: '#80DEEA'},
   {label: 'Power', icon: 'flash', color: '#B388FF'},
+  {label: 'Provider', icon: 'shield-check', color: '#B39DDB'},
+  {label: 'Faucet', icon: 'arrow-top-right', color: '#FF8A80'},
+  {label: 'Forum', icon: 'arrow-bottom-left', color: '#A5D6A7'},
+  {label: 'Explorer', icon: 'dots-horizontal', color: '#80DEEA'},
+  {label: 'Keychain', icon: 'flash', color: '#B388FF'},
 ];
 
 const activities = [
@@ -72,8 +80,28 @@ const activities = [
   },
 ];
 
+// Enable LayoutAnimation for Android
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 const HomeScreen = ({navigation}: any) => {
   const {logout} = useAuth();
+  const [showAllActions, setShowAllActions] = useState(false);
+
+  const displayedActions = showAllActions ? actions : actions.slice(0, 8);
+
+  const toggleActions = () => {
+    // Configure layout animation
+    LayoutAnimation.configureNext(
+      LayoutAnimation.create(
+        300, // duration
+        LayoutAnimation.Types.easeInEaseOut,
+        LayoutAnimation.Properties.opacity
+      )
+    );
+    setShowAllActions(!showAllActions);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -88,7 +116,7 @@ const HomeScreen = ({navigation}: any) => {
               <IconButton
                 icon="bell-outline"
                 size={28}
-                color="#111"
+                iconColor="#111"
                 style={styles.bellIcon}
               />
               <View style={styles.badge} />
@@ -103,7 +131,7 @@ const HomeScreen = ({navigation}: any) => {
               <IconButton
                 icon="chevron-down"
                 size={20}
-                color="#111"
+                iconColor="#111"
                 style={styles.accountCurrencyIcon}
               />
             </View>
@@ -118,19 +146,19 @@ const HomeScreen = ({navigation}: any) => {
                 <Text style={styles.accountGrowthLabelCustom}> This week</Text>
               </View>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.stakingBtnCustom}
               onPress={() => {}}>
               <View style={styles.stakingBtnContent}>
                 <IconButton icon="wallet" size={24} iconColor="#FFF" />
                 <Text style={styles.stakingBtnText}>Staking</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <Card style={styles.actionCard}>
           <View style={styles.actionGrid}>
-            {actions.map((action, idx) => (
+            {displayedActions.map((action, idx) => (
               <TouchableRipple
                 key={action.label}
                 style={styles.actionItem}
@@ -148,6 +176,21 @@ const HomeScreen = ({navigation}: any) => {
               </TouchableRipple>
             ))}
           </View>
+          {actions.length > 8 && (
+            <TouchableOpacity 
+              style={styles.toggleButton} 
+              onPress={toggleActions}>
+              <Text style={styles.toggleButtonText}>
+                {showAllActions ? "Less" : "More"}
+              </Text>
+              <IconButton
+                icon={showAllActions ? "chevron-up" : "chevron-down"}
+                size={16}
+                iconColor="#43B049"
+                style={styles.toggleIcon}
+              />
+            </TouchableOpacity>
+          )}
         </Card>
         <View style={styles.activityHeaderRow}>
           <Text style={styles.activityHeader}>Recent Activity</Text>
@@ -434,6 +477,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 12,
     fontWeight: '600',
+  },
+  toggleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+    alignSelf: 'center',
+  },
+  toggleIcon: {
+    margin: 0,
+  },
+  toggleButtonText: {
+    color: '#43B049',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 

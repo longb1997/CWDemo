@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import {
   Avatar,
@@ -14,6 +15,11 @@ import {
   TouchableRipple,
   Icon,
 } from 'react-native-paper';
+import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Reanimated, {
+  SharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import {CssView} from '../../components/CssView';
 
 const user = {
@@ -23,6 +29,7 @@ const user = {
 
 const coins = [
   {
+    id: 1,
     icon: require('../../assets/chameleon.png'),
     label: 'CHML',
     sub: 'Chameleon',
@@ -31,6 +38,7 @@ const coins = [
     iconBg: '#111',
   },
   {
+    id: 2,
     icon: require('../../assets/eth.png'),
     label: 'Privacy ETH',
     sub: 'Ethereum',
@@ -39,6 +47,7 @@ const coins = [
     iconBg: '#E6E9FF',
   },
   {
+    id: 3,
     icon: require('../../assets/btc.png'),
     label: 'Privacy BTC',
     sub: 'Bitcoin',
@@ -47,6 +56,7 @@ const coins = [
     iconBg: '#FFF3E0',
   },
   {
+    id: 4,
     icon: require('../../assets/usdt.png'),
     label: 'Privacy USDT',
     sub: 'ERC200',
@@ -57,6 +67,8 @@ const coins = [
 ];
 
 const WalletScreen = ({navigation}: any) => {
+  const [coinList, setCoinList] = React.useState(coins);
+
   const handlePress = (token: any) => {
     // Handle the press event here
     console.log('Coin pressed');
@@ -64,10 +76,28 @@ const WalletScreen = ({navigation}: any) => {
       token,
     });
   };
+
   const handleAddCoin = () => {
     // Handle the add coin event here
     console.log('Add coin pressed');
   };
+
+  const handleDeleteCoin = (coinId: number) => {
+    setCoinList(prevCoins => prevCoins.filter(coin => coin.id !== coinId));
+  };
+
+  const renderRightActions = (coinId: number) => () => {
+    return (
+      <View style={styles.deleteAction}>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleDeleteCoin(coinId)}>
+          <Text style={styles.deleteText}>Remove</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -78,36 +108,42 @@ const WalletScreen = ({navigation}: any) => {
             <Avatar.Image size={30} source={user.avatar} />
             <Text style={styles.userName}>{user.name}</Text>
             <View style={styles.bellWrapper}>
-              <IconButton
-                icon="bell-outline"
-                size={28}
-                color="#111"
-                style={styles.bellIcon}
-              />
+                          <IconButton
+              icon="bell-outline"
+              size={28}
+              iconColor="#111"
+              style={styles.bellIcon}
+            />
               <View style={styles.badge} />
             </View>
           </View>
         </View>
         <View style={{marginTop: 16}}>
-          {coins.map((coin, idx) => (
-            <TouchableOpacity
-              onPress={() => handlePress(coin)}
-              key={coin.label}
-              style={styles.coinCard}>
-              <View style={styles.coinLeft}>
-                <CssView borderRadius={22} overflow="hidden" marginRight={12}>
-                  <Icon
-                    size={32}
-                    source={coin.icon}
-                  />
-                </CssView>
-                <View>
-                  <Text style={styles.coinLabel}>{coin.label}</Text>
-                  <Text style={styles.coinSub}>{coin.sub}</Text>
+          {coinList.map((coin, idx) => (
+            <ReanimatedSwipeable
+              key={coin.id}
+              overshootRight={false}
+              renderRightActions={renderRightActions(coin.id)}
+              rightThreshold={40}
+              containerStyle={styles.swipeableContainer}>
+              <Pressable
+                onPress={() => handlePress(coin)}
+                style={styles.coinCard}>
+                <View style={styles.coinLeft}>
+                  <CssView borderRadius={22} overflow="hidden" marginRight={12}>
+                    <Icon
+                      size={32}
+                      source={coin.icon}
+                    />
+                  </CssView>
+                  <View>
+                    <Text style={styles.coinLabel}>{coin.label}</Text>
+                    <Text style={styles.coinSub}>{coin.sub}</Text>
+                  </View>
                 </View>
-              </View>
-              <Text style={styles.coinValue}>{coin.value}</Text>
-            </TouchableOpacity>
+                <Text style={styles.coinValue}>{coin.value}</Text>
+              </Pressable>
+            </ReanimatedSwipeable>
           ))}
           <TouchableRipple
             style={styles.addCoinCard}
@@ -130,7 +166,7 @@ const WalletScreen = ({navigation}: any) => {
           style={styles.issueBtn}
           labelStyle={styles.issueBtnLabel}
           onPress={() => {}}>
-          Issue your own privacy coin
+          Shield my crypto
         </Button>
       </ScrollView>
     </SafeAreaView>
@@ -181,13 +217,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(255,255,255,0.7)',
-    borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.7)',
-    borderRadius: 22,
+    backgroundColor: '#FFF',
     padding: 16,
-    marginHorizontal: 12,
-    marginBottom: 14,
   },
   coinLeft: {
     flexDirection: 'row',
@@ -249,6 +280,40 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
+  },
+  swipeableContainer: {
+    marginHorizontal: 12,
+    marginBottom: 14,
+  },
+  deleteAction: {
+    backgroundColor: '#FF4757',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 100,
+    height: '100%',
+    shadowColor: '#FF4757',
+    shadowOffset: {
+      width: -2,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  deleteButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    width: '100%',
+    borderTopRightRadius: 22,
+    borderBottomRightRadius: 22,
+  },
+  deleteText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
   },
 });
 
