@@ -211,7 +211,9 @@ const TradeScreen = ({ navigation }: any) => {
     // Here you could update balances, show a toast, etc.
   };
   // Track active tab
-  const [activeTab, setActiveTab] = useState(1); // 0: Deposit, 1: Trade, 2: Add Liquidity
+  const [activeTab, setActiveTab] = useState(1); // 0: Deposit, 1: Trade, 2: Add Liquidity]
+
+  const isAddLiquidity = activeTab === 2;
 
   return (
     <ScreenContainer style={styles.container}>
@@ -274,7 +276,7 @@ const TradeScreen = ({ navigation }: any) => {
               flexDirection="row"
               alignItems="center"
               justifyContent="space-between">
-              <Text style={styles.tradeLabel}>From</Text>
+              <Text style={styles.tradeLabel}>{isAddLiquidity ? 'Deposit' : 'From'}</Text>
             </CssView>
             <CssView
               flexDirection="row"
@@ -324,7 +326,7 @@ const TradeScreen = ({ navigation }: any) => {
           <View style={[styles.tradeItem, { marginTop: 8 }]}>
             <View style={styles.tradeRow}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.tradeLabel}>To</Text>
+                <Text style={styles.tradeLabel}>{isAddLiquidity ? 'Deposit' : 'To'}</Text>
                 <TextInput
                   style={[styles.tradeValue, { minWidth: 60 }]}
                   value={toAmount.toString()}
@@ -364,7 +366,7 @@ const TradeScreen = ({ navigation }: any) => {
             style={styles.tradeBtn}
             labelStyle={styles.tradeBtnLabel}
             onPress={swap}>
-            Trade
+            {isAddLiquidity ? 'Add Liquidity' : 'Trade'}
           </Button>
         </View>
         <CssView
