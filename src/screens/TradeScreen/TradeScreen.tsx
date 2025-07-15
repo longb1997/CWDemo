@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -9,11 +9,13 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import {Avatar, Button, Icon, IconButton} from 'react-native-paper';
-import {CommonCard} from '../../components/CommonCard';
-import {CssView} from '../../components/CssView';
-import {SelectTokenModal} from './SelectTokenModal';
+import { Avatar, Button, Icon, IconButton } from 'react-native-paper';
+import { CommonCard } from '../../components/CommonCard';
+import { CssView } from '../../components/CssView';
+import { SelectTokenModal } from './SelectTokenModal';
 import { ScreenContainer } from '../../components/ScreenContainer';
+import { SelectAddressDepositModal } from './SelectAddressDepositModal';
+import { SetAmountDepositModal } from './SetAmountDepositModal';
 
 const user = {
   name: 'Eleanor Pena',
@@ -21,9 +23,9 @@ const user = {
 };
 
 const tabs = [
-  {label: 'Deposit', icon: 'arrow-down-bold-circle-outline'},
-  {label: 'Trade', icon: 'swap-horizontal'},
-  {label: 'Add Liquidity', icon: 'wallet-plus-outline'},
+  { label: 'Deposit', icon: 'arrow-down-bold-circle-outline' },
+  { label: 'Trade', icon: 'swap-horizontal' },
+  { label: 'Add Liquidity', icon: 'wallet-plus-outline' },
 ];
 
 // Mock tokens data (should match SelectTokenModal)
@@ -114,9 +116,12 @@ const activities = [
   },
 ];
 
-const TradeScreen = ({navigation}: any) => {
+const TradeScreen = ({ navigation }: any) => {
   const [showSelectTokenModal, setShowSelectTokenModal] = React.useState(false);
-
+  const [showSelectAddressDepositModal, setShowSelectAddressDepositModal] =
+    React.useState(false);
+  const [showSetAmountDepositModal, setShowSetAmountDepositModal] =
+    React.useState(false);
   // Default: BTC -> USDT
   const [fromToken, setFromToken] = useState(tokens[0]);
   const [toToken, setToToken] = useState(tokens[2]);
@@ -125,6 +130,9 @@ const TradeScreen = ({navigation}: any) => {
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0);
+
+  // Store selected address for deposit
+  const [selectedDepositAddress, setSelectedDepositAddress] = useState<any>(null);
 
   const onSwapPositionToken = useCallback(() => {
     setFromToken(toToken);
@@ -159,6 +167,23 @@ const TradeScreen = ({navigation}: any) => {
     }
   };
 
+  const handleSelectAddress = (address: any) => {
+    console.log(address);
+    setSelectedDepositAddress(address);
+    setShowSelectAddressDepositModal(false);
+    setShowSetAmountDepositModal(true);
+  };
+
+  const handleConfirmAmount = (amount: string) => {
+    console.log('Deposit amount:', amount, 'to address:', selectedDepositAddress);
+    // Here you would handle the deposit logic
+    Alert.alert(
+      'Deposit Initiated',
+      `Depositing ${amount} to ${selectedDepositAddress?.name || 'selected address'}`,
+      [{ text: 'OK' }],
+    );
+  };
+
   // Calculate exchange rate and toAmount
   React.useEffect(() => {
     // If either token is missing, skip
@@ -181,7 +206,7 @@ const TradeScreen = ({navigation}: any) => {
     Alert.alert(
       'Swap Successful',
       `You have swapped ${fromAmount} ${fromToken.tokenName} to ${toAmount} ${toToken.tokenName}`,
-      [{text: 'OK', onPress: () => setFromAmount(0)}],
+      [{ text: 'OK', onPress: () => setFromAmount(0) }],
     );
     // Here you could update balances, show a toast, etc.
   };
@@ -191,7 +216,7 @@ const TradeScreen = ({navigation}: any) => {
   return (
     <ScreenContainer style={styles.container}>
       <ScrollView
-        contentContainerStyle={{flexGrow: 1}}
+        contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}>
         <View style={styles.headerBg}>
           <View style={styles.headerRow}>
@@ -201,7 +226,7 @@ const TradeScreen = ({navigation}: any) => {
               <IconButton
                 icon="bell-outline"
                 size={28}
-                color="#111"
+                iconColor="#111"
                 style={styles.bellIcon}
               />
               <View style={styles.badge} />
@@ -216,7 +241,13 @@ const TradeScreen = ({navigation}: any) => {
                 styles.tabItem,
                 activeTab === idx && styles.tabItemActive,
               ]}
-              onPress={() => setActiveTab(idx)}
+              onPress={() => {
+                if (idx === 0) {
+                  setShowSelectAddressDepositModal(true);
+                } else {
+                  setActiveTab(idx);
+                }
+              }}
               activeOpacity={0.8}>
               <Avatar.Icon
                 size={44}
@@ -250,11 +281,11 @@ const TradeScreen = ({navigation}: any) => {
               alignItems="center"
               justifyContent="space-between">
               <TextInput
-                style={[styles.tradeValue, {minWidth: 60}]}
+                style={[styles.tradeValue, { minWidth: 60 }]}
                 value={fromAmount.toString()}
                 keyboardType="numeric"
                 onChangeText={text => {
-                  setFromAmount(text);
+                  setFromAmount(Number(text) || 0);
                 }}
                 placeholder="0.00"
                 returnKeyType="done"
@@ -290,16 +321,16 @@ const TradeScreen = ({navigation}: any) => {
               color="#FFF"
             />
           </TouchableOpacity>
-          <View style={[styles.tradeItem, {marginTop: 8}]}>
+          <View style={[styles.tradeItem, { marginTop: 8 }]}>
             <View style={styles.tradeRow}>
-              <View style={{flex: 1}}>
+              <View style={{ flex: 1 }}>
                 <Text style={styles.tradeLabel}>To</Text>
                 <TextInput
-                  style={[styles.tradeValue, {minWidth: 60}]}
+                  style={[styles.tradeValue, { minWidth: 60 }]}
                   value={toAmount.toString()}
                   keyboardType="numeric"
                   onChangeText={text => {
-                    setToAmount(text);
+                    setToAmount(Number(text) || 0);
                   }}
                   placeholder="0.00"
                   returnKeyType="done"
@@ -313,7 +344,7 @@ const TradeScreen = ({navigation}: any) => {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={[styles.tradeItem, {marginTop: 8}]}>
+          <View style={[styles.tradeItem, { marginTop: 8 }]}>
             <View style={styles.tradeInfoRow}>
               <Text style={styles.tradeInfoLabel}>Exchange Rate</Text>
               <Text style={styles.tradeInfoValue}>
@@ -345,37 +376,37 @@ const TradeScreen = ({navigation}: any) => {
             mode="text"
             labelStyle={styles.viewAllBtnLabel}
             style={styles.viewAllBtn}
-            onPress={() => {}}>
+            onPress={() => { }}>
             View all
           </Button>
         </CssView>
         {activities.map((activity, idx) => (
           <CommonCard key={idx}>
             <View style={styles.activityRow}>
-              <View style={{flex: 1, marginLeft: 12, gap: 8}}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flex: 1, marginLeft: 12, gap: 8 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Avatar.Image
                     size={24}
                     source={require('../../assets/usdt.png')}
-                    style={{backgroundColor: '#fff', marginRight: 8}}
+                    style={{ backgroundColor: '#fff', marginRight: 8 }}
                   />
                   <Text style={styles.activityType}>{activity.type}</Text>
                 </View>
                 <Text style={styles.activityId}>ID {activity.id}</Text>
                 <Text style={styles.activityAmount}>{activity.amount}</Text>
               </View>
-              <View style={{alignItems: 'flex-end', gap: 8}}>
+              <View style={{ alignItems: 'flex-end', gap: 8 }}>
                 <Text style={styles.activityAccount}>{activity.account}</Text>
                 <Text style={styles.activityDate}>{activity.date}</Text>
                 <View
                   style={[
                     styles.statusBadge,
-                    {backgroundColor: activity.statusColor},
+                    { backgroundColor: activity.statusColor },
                   ]}>
                   <Text
                     style={[
                       styles.statusBadgeText,
-                      {color: activity.statusTextColor},
+                      { color: activity.statusTextColor },
                     ]}>
                     {activity.status}
                   </Text>
@@ -389,6 +420,19 @@ const TradeScreen = ({navigation}: any) => {
         visible={showSelectTokenModal}
         onSelectToken={handleSelectToken}
         onClose={() => setShowSelectTokenModal(false)}
+      />
+      <SelectAddressDepositModal
+        visible={showSelectAddressDepositModal}
+        onSelectAddress={handleSelectAddress}
+        onClose={() => setShowSelectAddressDepositModal(false)}
+        selectedToken={fromToken}
+      />
+      <SetAmountDepositModal
+        visible={showSetAmountDepositModal}
+        onClose={() => setShowSetAmountDepositModal(false)}
+        onConfirm={handleConfirmAmount}
+        selectedToken={fromToken}
+        walletInfo={selectedDepositAddress}
       />
     </ScreenContainer>
   );
@@ -458,7 +502,7 @@ const styles = StyleSheet.create({
     borderColor: '#A7F3D0',
     backgroundColor: '#fff',
     shadowColor: '#43B049',
-    shadowOffset: {width: 0, height: 4},
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.12,
     shadowRadius: 8,
     elevation: 4,
