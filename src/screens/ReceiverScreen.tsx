@@ -36,9 +36,13 @@ interface ReceiverScreenProps {
 const ReceiverScreen = ({route}: ReceiverScreenProps) => {
   const {token} = route.params;
   const [amount, setAmount] = useState('');
+  const [activeTab, setActiveTab] = useState(0); // 0: In Network, 1: Out Network
 
-  // Mock wallet address - in a real app this would come from your wallet service
-  const walletAddress = '0x1234567890abcdef1234567890abcdef12345678';
+  // Mock wallet addresses - in a real app this would come from your wallet service
+  const inNetworkAddress = '0x37e9627a91dd13e45324685cd58797ad6583d762';
+  const outNetworkAddress = '0x1234567890abcdef1234567890abcdef12345678';
+  
+  const walletAddress = activeTab === 0 ? inNetworkAddress : outNetworkAddress;
 
   const generateQRValue = useCallback(() => {
     if (amount && parseFloat(amount) > 0) {
@@ -86,6 +90,24 @@ const ReceiverScreen = ({route}: ReceiverScreenProps) => {
         showsVerticalScrollIndicator={false}>
         <Header label={`Receive ${token.label}`} />
 
+        {/* Tabs */}
+        <View style={styles.tabsContainer}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 0 && styles.activeTab]}
+            onPress={() => setActiveTab(0)}>
+            <Text style={[styles.tabText, activeTab === 0 && styles.activeTabText]}>
+              In Network
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 1 && styles.activeTab]}
+            onPress={() => setActiveTab(1)}>
+            <Text style={[styles.tabText, activeTab === 1 && styles.activeTabText]}>
+              Out Network
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.content}>
           {/* QR Code Section */}
           <CommonCard>
@@ -97,8 +119,10 @@ const ReceiverScreen = ({route}: ReceiverScreenProps) => {
                 textAlign: 'center',
                 color: '#595959',
               }}>
-              This is your Chameleon multi-currency wallet address. Use it to
-              receive privacy coins from another Chameleon wallet.
+              {activeTab === 0 
+                ? 'This is your Incognito multi-currency wallet address. Use it to receive privacy coins from another Incognito wallet.'
+                : 'This is your external wallet address. Use it to receive coins from external wallets and exchanges.'
+              }
             </Text>
             <View style={styles.qrSection}>
               <QrCodeGenerate
@@ -128,7 +152,7 @@ const ReceiverScreen = ({route}: ReceiverScreenProps) => {
                     height: 42,
                     width: '80%',
                   }}>
-                  0x37e9627a91dd13e453246856d58797ad6583d762
+                  {walletAddress}
                 </Text>
                 <View
                   style={{
@@ -265,6 +289,33 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     marginLeft: 8,
+  },
+  tabsContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 8,
+    backgroundColor: '#F0F9FF',
+    borderRadius: 25,
+    padding: 4,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 21,
+    alignItems: 'center',
+  },
+  activeTab: {
+    backgroundColor: '#43B049',
+  },
+  tabText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#666',
+  },
+  activeTabText: {
+    color: '#fff',
   },
 });
 

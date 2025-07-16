@@ -8,6 +8,8 @@ import {
   View,
   TextInput,
   Alert,
+  Modal,
+  Dimensions,
 } from 'react-native';
 import { Avatar, Button, Icon, IconButton } from 'react-native-paper';
 import { CommonCard } from '../../components/CommonCard';
@@ -122,6 +124,7 @@ const TradeScreen = ({ navigation }: any) => {
     React.useState(false);
   const [showSetAmountDepositModal, setShowSetAmountDepositModal] =
     React.useState(false);
+  const [showOptionsModal, setShowOptionsModal] = React.useState(false);
   // Default: BTC -> USDT
   const [fromToken, setFromToken] = useState(tokens[0]);
   const [toToken, setToToken] = useState(tokens[2]);
@@ -184,6 +187,18 @@ const TradeScreen = ({ navigation }: any) => {
     );
   };
 
+  const handleRemoveLiquidity = () => {
+    setShowOptionsModal(false);
+    // Handle remove liquidity logic here
+    Alert.alert('Remove Liquidity', 'Remove liquidity functionality would be implemented here');
+  };
+
+  const handleWithdrawFunds = () => {
+    setShowOptionsModal(false);
+    // Handle withdraw funds logic here
+    Alert.alert('Withdraw Funds', 'Withdraw funds functionality would be implemented here');
+  };
+
   // Calculate exchange rate and toAmount
   React.useEffect(() => {
     // If either token is missing, skip
@@ -233,6 +248,13 @@ const TradeScreen = ({ navigation }: any) => {
               />
               <View style={styles.badge} />
             </View>
+            <IconButton
+              icon="dots-vertical"
+              size={28}
+              iconColor="#111"
+              style={styles.bellIcon}
+              onPress={() => setShowOptionsModal(true)}
+            />
           </View>
         </View>
         <View style={styles.tabsRow}>
@@ -436,6 +458,43 @@ const TradeScreen = ({ navigation }: any) => {
         selectedToken={fromToken}
         walletInfo={selectedDepositAddress}
       />
+      
+      {/* Bottom Sheet Modal for Options */}
+      <Modal
+        visible={showOptionsModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowOptionsModal(false)}>
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowOptionsModal(false)}>
+          <View style={styles.bottomSheet}>
+            <View style={styles.bottomSheetHandle} />
+            <Text style={styles.bottomSheetTitle}>Options</Text>
+            
+            <TouchableOpacity
+              style={styles.bottomSheetOption}
+              onPress={handleRemoveLiquidity}>
+              <Icon source="minus-circle-outline" size={24} color="#111" />
+              <View style={styles.bottomSheetOptionTextContainer}>
+                <Text style={styles.bottomSheetOptionText}>Remove Liquidity</Text>
+                <Text style={styles.bottomSheetOptionSubtitle}>Remove your liquidity from the post</Text>
+              </View>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              style={styles.bottomSheetOption}
+              onPress={handleWithdrawFunds}>
+              <Icon source="cash-minus" size={24} color="#111" />
+              <View style={styles.bottomSheetOptionTextContainer}>
+                <Text style={styles.bottomSheetOptionText}>Withdraw Funds</Text>
+                <Text style={styles.bottomSheetOptionSubtitle}>Withdraw funds from your pDEX account to another account</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </ScreenContainer>
   );
 };
@@ -723,6 +782,59 @@ const styles = StyleSheet.create({
   },
   statusBadgeText: {
     fontSize: 12,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  bottomSheet: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingTop: 10,
+    paddingBottom: 30,
+    paddingHorizontal: 20,
+    minHeight: 200,
+  },
+  bottomSheetHandle: {
+    width: 40,
+    height: 4,
+    backgroundColor: '#ddd',
+    borderRadius: 2,
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  bottomSheetTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#111',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  bottomSheetOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+    marginBottom: 10,
+    backgroundColor: '#F8FFFB',
+  },
+  bottomSheetOptionTextContainer: {
+    flex: 1,
+    marginLeft: 15,
+  },
+  bottomSheetOptionText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#111',
+    marginBottom: 2,
+  },
+  bottomSheetOptionSubtitle: {
+    fontSize: 13,
+    color: '#888',
+    lineHeight: 18,
   },
 });
 
