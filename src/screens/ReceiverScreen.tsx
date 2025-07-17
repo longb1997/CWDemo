@@ -14,6 +14,9 @@ import { CommonCard } from '../components/CommonCard';
 import { Header } from '../components/Header';
 import QrCodeGenerate from '../components/QrCodeGenerate';
 import ClipboardService from '../utils/ClipboardService';
+import { CssView } from '../components/CssView';
+import { SelectTokenModal } from './TradeScreen/SelectTokenModal';
+import { Icon, Button } from 'react-native-paper';
 
 const xml = `
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -33,15 +36,62 @@ interface ReceiverScreenProps {
   };
 }
 
-const ReceiverScreen = ({route}: ReceiverScreenProps) => {
-  const {token} = route.params;
+
+const tokens = [
+  {
+    id: '1',
+    name: 'Bitcoin',
+    network: 'Bitcoin',
+    tokenName: 'BTC',
+    icon: require('../assets/btc.png'),
+    balance: 0.01,
+    priceToUsdt: 1000,
+  },
+  {
+    id: '2',
+    name: 'Ethereum',
+    network: 'ERC20',
+    tokenName: 'ETH',
+    icon: require('../assets/eth.png'),
+    balance: 1,
+    priceToUsdt: 500
+  },
+  {
+    id: '3',
+    name: 'Tether',
+    network: 'ERC20',
+    tokenName: 'USDT',
+    icon: require('../assets/usdt.png'),
+    balance: 1200,
+  },
+  {
+    id: '4',
+    name: 'BNB',
+    network: 'BSC20',
+    tokenName: 'BNB',
+    icon: require('../assets/bnb.png'),
+    balance: 1200,
+  },
+  {
+    id: '5',
+    name: 'Tron',
+    network: 'TRC20',
+    tokenName: 'TRX',
+    icon: require('../assets/tron.png'),
+    balance: 1200,
+  },
+];
+
+const ReceiverScreen = ({ route }: ReceiverScreenProps) => {
+  const { token } = route.params;
   const [amount, setAmount] = useState('');
   const [activeTab, setActiveTab] = useState(0); // 0: In Network, 1: Out Network
-
+  const [selectReceiveCoin, setSelectReceiveCoin] = useState(null);
+  const [showSelectTokenModal, setShowSelectTokenModal] = useState(false);
   // Mock wallet addresses - in a real app this would come from your wallet service
   const inNetworkAddress = '0x37e9627a91dd13e45324685cd58797ad6583d762';
   const outNetworkAddress = '0x1234567890abcdef1234567890abcdef12345678';
-  
+
   const walletAddress = activeTab === 0 ? inNetworkAddress : outNetworkAddress;
 
   const generateQRValue = useCallback(() => {
@@ -83,6 +133,10 @@ const ReceiverScreen = ({route}: ReceiverScreenProps) => {
     setAmount('');
   }, []);
 
+  const handleSelectToken = (selectToken: any) => {
+    setSelectReceiveCoin(selectToken);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -119,19 +173,27 @@ const ReceiverScreen = ({route}: ReceiverScreenProps) => {
                 textAlign: 'center',
                 color: '#595959',
               }}>
-              {activeTab === 0 
+              {activeTab === 0
                 ? 'This is your Incognito multi-currency wallet address. Use it to receive privacy coins from another Incognito wallet.'
-                : 'This is your external wallet address. Use it to receive coins from external wallets and exchanges.'
+                : 'Which cryptocurrency do you want to receive anonymously? '
               }
             </Text>
-            <View style={styles.qrSection}>
+            {activeTab === 0 ? <View style={styles.qrSection}>
               <QrCodeGenerate
                 value={generateQRValue()}
                 size={200}
                 style={styles.qrCode}
               />
-            </View>
-            <TouchableOpacity
+            </View> : <TouchableOpacity onPress={() => setShowSelectTokenModal(true)}
+              style={{ flex: 1, backgroundColor: '#F5F5F5', borderRadius: 10, borderColor: '#FFF', height: 60, borderWidth: 1, flexDirection: 'row', alignItems: 'center', paddingRight: 16 }}
+            >
+              <CssView flexDirection='row' alignItems='center' paddingHorizontal={16} gap={8} flex={1}>
+                <Icon source={selectReceiveCoin?.icon} size={30} />
+                <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>{selectReceiveCoin?.tokenName || 'Select one'}</Text>
+              </CssView>
+              <Icon source='chevron-down' size={24} />
+            </TouchableOpacity>}
+            {activeTab === 0 && <TouchableOpacity
               style={{
                 marginTop: 16,
                 backgroundColor: '#F5F5F5',
@@ -167,9 +229,22 @@ const ReceiverScreen = ({route}: ReceiverScreenProps) => {
                   <SvgXml xml={xml} width={24} height={24} />
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity>}
           </CommonCard>
         </View>
+        <Button
+          mode="contained"
+          style={styles.issueBtn}
+          labelStyle={styles.issueBtnLabel}
+          onPress={() => { }}>
+          Receive
+        </Button>
+        <SelectTokenModal
+          tokens={tokens}
+          visible={showSelectTokenModal}
+          onSelectToken={handleSelectToken}
+          onClose={() => setShowSelectTokenModal(false)}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -185,6 +260,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+    flex: 1,
   },
   qrSection: {
     alignItems: 'center',
@@ -280,7 +356,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     elevation: 2,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
@@ -316,6 +392,21 @@ const styles = StyleSheet.create({
   },
   activeTabText: {
     color: '#fff',
+  },
+  issueBtn: {
+    backgroundColor: '#43B049',
+    borderRadius: 32,
+    paddingVertical: 8,
+    width: '90%',
+    alignSelf: 'center',
+    marginBottom: 24,
+    marginTop: 16,
+  },
+  issueBtnLabel: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });
 

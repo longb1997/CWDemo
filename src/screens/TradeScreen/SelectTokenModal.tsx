@@ -10,7 +10,7 @@ import {
 import {Icon} from 'react-native-paper';
 import {CssView} from '../../components/CssView';
 
-const tokens = [
+const defaultTokens = [
   {
     id: '1',
     name: 'Privacy Bitcoin',
@@ -59,10 +59,12 @@ export const SelectTokenModal = ({
   visible,
   onClose,
   onSelectToken,
+  tokens,
 }: {
   visible: boolean;
   onClose: () => void;
   onSelectToken: (token: any) => any;
+  tokens: any[];
 }) => {
   return (
     <Modal visible={visible} animationType="fade" transparent>
@@ -79,7 +81,7 @@ export const SelectTokenModal = ({
             </TouchableOpacity>
           </CssView>
           <FlatList
-            data={tokens}
+            data={tokens || defaultTokens}
             ItemSeparatorComponent={() => (
               <CssView
                 width={'100%'}
